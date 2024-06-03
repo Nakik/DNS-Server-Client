@@ -29,10 +29,18 @@ Below is a simple example demonstrating how to use the DNS client in an asyncio 
 
 ```python
 import asyncio
-from DNS import DNSServer
+from DNS import DNSClient
 
 async def main():
-    dns = DNSServer()
-    await dns.Main()
+    My_IP = My_DNS_IP/8.8.8.8.
+    client = DNSClient(My_IP, 53)
+    asyncio.create_task(client.Reader()) #Start Reader funcion.
+    query = await client.BuildQuery(type=dns_record_types["A"], domain="example.com") #Build query
+    TTA = time.time() #Start time
+    r = await client.Send(query.ToBytes()) #Send query and wait for response.
+    anser = await Parse.DNSMessageToJSON(r) #Parse Response.
+    print(f"Time: {SetToString(time.time() - TTA)}\nAnsers:") #Print ansers + Time to anser.
+    for ans in anser.GetAnsers():
+        print(ans)
 
 asyncio.run(main())

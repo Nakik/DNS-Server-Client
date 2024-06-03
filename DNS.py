@@ -2,7 +2,6 @@ Window_Title = "DNS Server + Client By Noki"
 try:
     import pygetwindow as gw #This is for checking if the app is already running.
     windows = gw.getAllTitles()
-    print(windows)
     if Window_Title in windows:
         print("The app is already running.")
         if input("You want to continue? [y to continue): ").lower() != "y":

@@ -18,12 +18,12 @@ import os
 import time
 
 ##############################################
-from .DNSClient import DNSClient
-from .DNSServer import DNSServer
-from .DNSLogger import Logger
-from .Inputes import Inputes
-from .Proxy import Proxy
-from .util import *
+from DNSClient import DNSClient
+from DNSServer import DNSServer
+from DNSLogger import Logger
+from Inputes import Inputes
+from Proxy import Proxy
+from util import *
 #This is for Proxy.
 
 os.system(f"title {Window_Title}")

@@ -507,19 +507,21 @@ class Memory():
         if len(request._questions) != 1:
             return False
         anser = []
+        ttl = 4,294,967,295
         for an in request._ansers:
+            if ttl > an[3]:
+                ttl = an[3]
             anser.append((an[0], an[1], an[2], an[3], an[4]))
-        type_ = request._questions[0][1]
-        Class = request._questions[0][2]
-        self.memory[str(request._questions[0])] = {"type": type_, "class": Class, "AA": request.AA, "last_update": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "anser": anser}
-
+        self.memory[str(request._questions[0])] = {"TTL": ttl, "AA": request.AA, "last_update": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "anser": anser}
     def Check(self, request: DNSMessage):
         if len(request._questions) != 1:
             return False
         key = str(request._questions[0])
         if key in self.memory:
-            if (datetime.datetime.now() - datetime.datetime.strptime(self.memory[key]["last_update"], "%Y-%m-%d %H:%M:%S")).seconds < 60:
+            if (datetime.datetime.now() - datetime.datetime.strptime(self.memory[key]["last_update"], "%Y-%m-%d %H:%M:%S")).seconds < self.memory[key]["TTL"]:
                 return self.UpdateTTL(self.memory[key]["anser"],datetime.datetime.strptime(self.memory[key]["last_update"], "%Y-%m-%d %H:%M:%S")), self.memory[key]["AA"]
+            else:
+                del self.memory[key]
         return False, 0
     
 memory = Memory()

@@ -24,14 +24,19 @@ class DNSServers():
         self.LastBestTime = 12
         self.XS = 20
         self.ZX = 0
+        self.NS = 0
     def Get(self) -> DNSClient:
+        print(self.XS)
         if self.XS == 20:
+            print(self.ZX, self.NS, self.XS)
             if self.ZX == 10:
                 self.XS = 0
                 self.ZX = 0
                 return self.Sockets[0]
             self.ZX += 1
-            return random.choice(self.Sockets) #Get Random DNS server.
+            if self.NS > len(self.Sockets):
+                self.NS = 0
+            return self.Sockets[self.NS]
         self.XS += 1 #Add 1 to counter.
         return self.Sockets[0]
     

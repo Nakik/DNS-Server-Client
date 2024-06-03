@@ -33,6 +33,7 @@ def Print(*k):
     Text = ""
     for Item in k:
         Text += str(Item)
+        Text += " "
     Console.write(Text + "\n")
 
 print = Print
@@ -40,6 +41,8 @@ My_IP = get_local_ip()
 print("Starting app on: ", My_IP)
 
 DNSServer_List = [
+("194.90.0.1",53 ),       # My country DNS.
+("212.143.0.1",53 ),       #My country DNS.
 ("8.8.8.8",53 ),       # Google Public DNS
 ("8.8.4.4",53 ),       # Google Public DNS
 ("1.1.1.1",53 ),       # Cloudflare DNS
@@ -510,6 +513,8 @@ class Memory():
         ttl = 4,294,967,295
         for an in request._ansers:
             if ttl > an[3]:
+                print(type(ttl), type(an[3]))
+                print(an[3], an)
                 ttl = an[3]
             anser.append((an[0], an[1], an[2], an[3], an[4]))
         self.memory[str(request._questions[0])] = {"TTL": ttl, "AA": request.AA, "last_update": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "anser": anser}

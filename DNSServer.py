@@ -26,9 +26,7 @@ class DNSServers():
         self.ZX = 0
         self.NS = 0
     def Get(self) -> DNSClient:
-        print(self.XS)
         if self.XS == 20:
-            print(self.ZX, self.NS, self.XS)
             if self.ZX == 10:
                 self.XS = 0
                 self.ZX = 0

@@ -1,0 +1,1 @@
+Q.domain == "example.com" & Q.type == 1 -> 1.1.1.1

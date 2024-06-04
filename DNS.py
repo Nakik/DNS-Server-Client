@@ -104,13 +104,13 @@ async def main():
             "Memory": 1,
             "Proxy": 1,
             "Logs": "DNS.log",
-            "Time": 3,
+            "MemoryLogs": 3,
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     try:
         memory = False
-        if Settings["Time"] != 0:
-            asyncio.create_task(PrintInfo(Settings["Time"]))
+        if Settings["MemoryLogs"] != 0:
+            asyncio.create_task(PrintInfo(Settings["MemoryLogs"]))
         if Settings["Memory"] == 1:
             memory = True
         proxy = None

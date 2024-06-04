@@ -70,7 +70,7 @@ class DNSServer():
             except:
                 continue
             try:
-                asyncio.create_task(asyncio.wait_for(self.HandleQuery(data, addr), 9))#9 seconds its more than enough for DNS.
+                asyncio.create_task(asyncio.wait_for(self.HandleQuery(data, addr), 3))#3 seconds its more than enough for DNS.
                 #Creating task for each new query is better. it just for the Send and Wait for response part. But it can be really effective.
                 #the wait_for, is so it will not open task without close. some times it can miss and just get stuck on the Wait for Response funcion(wait_for()).
             except:

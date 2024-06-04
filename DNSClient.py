@@ -1,6 +1,7 @@
 import socket
 from util import *
 from Socket import Socket
+import time
 
 class DNSClient():
     #Create the main connection. default is google DNS
@@ -21,24 +22,25 @@ class DNSClient():
                 if data != 0:
                     _key = data[:2]
                     self.msg[_key] = data
-                    self.Wait_list[_key].set()
+                    self.Wait_list[_key].set() #Part of the event wait and key system.
             except:
                 continue
         return
     async def Send(self, data: bytes) -> bytes:
         #Check and make sure Reader is not None. if it is. start the Reader.
         await self._send(data) #send the request to the main DNS server.
-        return await self.Wait_for(data[:2]) #wait for the response from the main DNS server.
+        r = await self.Wait_for(data[:2]) #wait for the response from the main DNS server.
+        return r
     async def _send(self, data: bytes):
         await self.Socket.Send(data, (self.ip, self.port))
 
     async def Wait_for(self, _key):
-        lock = Events()
-        self.Wait_list[_key] = lock
-        await lock.wait()
+        lock = Events() #Part of the event wait and key system.
+        self.Wait_list[_key] = lock #Part of the event wait and key system.
+        await lock.wait() #Part of the event wait and key system.
         response = self.msg[_key]
         del self.msg[_key]
-        del self.Wait_list[_key]
+        del self.Wait_list[_key] #Part of the event wait and key system.
         return response
     
     #Clean up funcion.-_-

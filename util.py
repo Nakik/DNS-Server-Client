@@ -37,9 +37,8 @@ def Print(*k):
     Console.write(Text + "\n")
 
 print = Print
-My_IP = get_local_ip()
-print("Starting app on: ", My_IP)
 
+My_IP = get_local_ip()
 DNSServer_List = [
 ("1.0.0.1",53 ),       # Cloudflare DNS
 ("208.67.220.220",53 ),# OpenDNS (Cisco)

@@ -65,12 +65,12 @@ def FirstPrint():
                                                                |___/                    |___/       
     """)
     print("\033[0m")
-    print("\033[94m" + " "*30 + "DNS Server By Noki" + " "*30 + "\033[0m")
-    print("\033[92m")
-    print("\033[36m")
+    print("\033[94m" + " "*30 + "DNS Server By Noki")
     print("\033[31m" + "Commands:")
     print("\033[35m" + "Client -> Send DNS queries.")
     print("\033[36m" + "Server -> Manage server; Proxy, auto anser, logs." + "\033[0m")
+    print("\033[93m" + "Starting app on: ", My_IP + "\033[0m") #My_IP from util.
+     
 FirstPrint()
 
 async def main():
@@ -107,9 +107,9 @@ async def main():
         TTA = time.time()
         r = await client.Send(query.ToBytes())
         anser = await Parse.DNSMessageToJSON(r)
-        print(f"Time: {SetToString(time.time() - TTA)}\nAnsers:")
-        for ans in anser.GetAnsers():
-            print(ans)
+        #print(f"Time: {SetToString(time.time() - TTA)}\nAnsers:")
+        #for ans in anser.GetAnsers():
+        #    print(ans)
         await asyncio.sleep(5)
 
 if __name__ == "__main__":

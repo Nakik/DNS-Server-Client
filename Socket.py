@@ -1,5 +1,4 @@
 import asyncio, socket
-import traceback
 
 import contextvars, functools #To run the socket funcion in Asyncio.
 #Create Socket object.
@@ -24,7 +23,6 @@ class Socket():
             func_call = functools.partial(ctx.run, self.s.send, Data)
             await self.loop.run_in_executor(self.ex, func_call)
         except:
-            print(traceback.format_exc())
             return 0
     async def Bind(self, addr: type):
         try:

@@ -1,5 +1,7 @@
 import asyncio, socket
+import traceback
 
+import contextvars, functools #To run the socket funcion in Asyncio.
 #Create Socket object.
 #its like(exactly) the normal socket just Asyncio.
 #Normal asyncio socket funcions to slow.
@@ -12,50 +14,59 @@ class Socket():
         
     async def Send(self, Data: bytes, addr: tuple=None):
         try:
+            ctx = contextvars.copy_context()
             if isinstance(Data, str):
-                if addr:
-                    await self.loop.run_in_executor(self.ex, self.s.sendto, Data.encode(), addr)
-                    return 1
-                await self.loop.run_in_executor(self.ex, self.s.send, Data.encode())
-                return 1
+                Data = Data.encode()
             if addr:
-                await self.loop.run_in_executor(self.ex, self.s.sendto, Data, addr)
-                return 1
-            await self.loop.run_in_executor(self.ex, self.s.send, Data)
+                    func_call = functools.partial(ctx.run, self.s.sendto, Data, addr)
+                    await self.loop.run_in_executor(self.ex, func_call)
+                    return 1
+            func_call = functools.partial(ctx.run, self.s.send, Data)
+            await self.loop.run_in_executor(self.ex, func_call)
         except:
+            print(traceback.format_exc())
             return 0
     async def Bind(self, addr: type):
         try:
-            await self.loop.run_in_executor(self.ex, self.s.bind, addr)
+            ctx = contextvars.copy_context()
+            func_call = functools.partial(ctx.run, self.s.bind, addr)
+            await self.loop.run_in_executor(self.ex, func_call)
             return 1
         except:
             return 0
     async def Close(self):
         try:
-            await self.loop.run_in_executor(self.ex, self.s.close)
+            ctx = contextvars.copy_context()
+            func_call = functools.partial(ctx.run, self.s.close)
+            await self.loop.run_in_executor(self.ex, func_call)
             return 1
         except:
             return 0
     async def Connect(self, addr: type):
         try:
-            await self.loop.run_in_executor(self.ex, self.s.connect, addr)
+            ctx = contextvars.copy_context()
+            func_call = functools.partial(ctx.run, self.s.connect, addr)
+            await self.loop.run_in_executor(self.ex, func_call)
             return 1
         except:
             return 0
     async def Recv(self, timeout: int=None):
+        ctx = contextvars.copy_context()
         if timeout != None:
-            try:
-              return await asyncio.wait_for(self.loop.run_in_executor(self.ex, self.s.recv, 1024), timeout=timeout)
-            except:
-                return 0
+            func_call = functools.partial(ctx.run, self.s.recv, 1024)
+            fun = asyncio.wait_for(self.loop.run_in_executor(self.ex, func_call), timeout=timeout)
         else:
-            try:
-                return await self.loop.run_in_executor(self.ex, self.s.recv, 1024)
-            except:
-                return 0
+            func_call = functools.partial(ctx.run, self.s.recv, 1024)
+            fun = self.loop.run_in_executor(self.ex, func_call)
+        try:
+            return await fun
+        except:
+            return 0
     async def RecvFrom(self):
         try:
-            return await self.loop.run_in_executor(self.ex, self.s.recvfrom, 1024)
+            ctx = contextvars.copy_context()
+            func_call = functools.partial(ctx.run, self.s.recvfrom, 1024)
+            return await self.loop.run_in_executor(self.ex, func_call)
         except:
             return 0, ""
     

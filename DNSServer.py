@@ -85,6 +85,7 @@ class DNSServer():
         return
     async def HandleQuery(self, data: bytes, addr: tuple):
         try:
+            Time = time.time()
             if data == 0 or not 0 == (data[:12][2] >> 7) & 1:
                 return
             requests = await Parse.DNSMessageToJSON(data)#DNSMessage

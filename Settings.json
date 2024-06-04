@@ -1,5 +1,6 @@
 {
     "Memory": 1,
     "Proxy": 1,
-    "Logs": "DNS.log"
+    "Logs": "DNS.log",
+    "Time": 3
 }

@@ -9,6 +9,8 @@ try:
 except:
     pass
 
+os.system(f"title {Window_Title}") #Set title Why not?
+
 #This libraries are default in python. so you dont need to install them.
 import asyncio
 import traceback
@@ -16,6 +18,7 @@ import sys
 import json
 import os
 import time
+import psutil
 
 ##############################################
 from DNSClient import DNSClient
@@ -25,8 +28,6 @@ from Inputes import Inputes
 from Proxy import Proxy
 from util import *
 #This is for Proxy.
-
-os.system(f"title {Window_Title}")
 
 try:
     if True:
@@ -73,6 +74,27 @@ def FirstPrint():
      
 FirstPrint()
 
+async def PrintInfo(Time:int=3):
+    while True:
+        try:
+            #This is From psutil. its for checking the memory and CPU usage.
+            #This code is modify version for AioDNS. so it will work with asyncio.
+            #This code is not mine. I just modify it to work with asyncio.
+            process = psutil.Process(os.getpid())
+            mem_info = process.memory_info()
+            Memory = BytesParse(mem_info.rss)
+            st1 = time.time()
+            pt1 = process.cpu_times()
+            await asyncio.sleep(Time)
+            pt2 = process.cpu_times()
+            delta_proc = (pt2.user - pt1.user) + (pt2.system - pt1.system)
+            delta_time = time.time() - st1
+            overall_cpus_percent = ((delta_proc / delta_time) * 100)
+            single_cpu_percent = overall_cpus_percent * (psutil.cpu_count() or 1)
+            print(f"Memory: {Memory}\nCPU: {single_cpu_percent:.2f}%")
+        except:
+            print(traceback.format_exc())
+            
 async def main():
     Settingfile = "Settings.json"
     try:
@@ -81,11 +103,14 @@ async def main():
         Settings = {
             "Memory": 1,
             "Proxy": 1,
-            "Logs": "DNS.log"
+            "Logs": "DNS.log",
+            "Time": 3,
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     try:
         memory = False
+        if Settings["Time"] != 0:
+            asyncio.create_task(PrintInfo(Settings["Time"]))
         if Settings["Memory"] == 1:
             memory = True
         proxy = None
@@ -107,10 +132,9 @@ async def main():
         TTA = time.time()
         r = await client.Send(query.ToBytes())
         anser = await Parse.DNSMessageToJSON(r)
-        #print(f"Time: {SetToString(time.time() - TTA)}\nAnsers:")
+        print(f"Time: {SetToString(time.time() - TTA)}\nAnsers Q: {anser.AN}")
         #for ans in anser.GetAnsers():
         #    print(ans)
-        await asyncio.sleep(5)
-
+            
 if __name__ == "__main__":
     asyncio.run(main())

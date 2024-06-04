@@ -9,6 +9,7 @@ try:
 except:
     pass
 
+import os
 os.system(f"title {Window_Title}") #Set title Why not?
 
 #This libraries are default in python. so you dont need to install them.
@@ -16,7 +17,6 @@ import asyncio
 import traceback
 import sys
 import json
-import os
 import time
 import psutil
 

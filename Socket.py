@@ -13,8 +13,8 @@ class Socket():
         self.ex = None
     async def Run(self, fun, *args):
         ctx = contextvars.copy_context()
-        return await self.loop.run_in_executor(None, functools.partial(ctx.run, fun, **args))
-    
+        return await self.loop.run_in_executor(None, functools.partial(ctx.run, fun, *args))
+
     async def Send(self, Data: bytes, addr: tuple=None):
         try:
             if isinstance(Data, str):

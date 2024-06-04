@@ -70,8 +70,7 @@ def FirstPrint():
     print("\033[31m" + "Commands:")
     print("\033[35m" + "Client -> Send DNS queries.")
     print("\033[36m" + "Server -> Manage server; Proxy, auto anser, logs." + "\033[0m")
-    print("\033[93m" + "Starting app on: ", My_IP + "\033[0m") #My_IP from util.
-     
+
 FirstPrint()
 
 async def PrintInfo(Time:int=3):
@@ -118,6 +117,7 @@ async def main():
             proxy = Proxy(FileToSave="Filters.txt")
         if Settings["Logs"] != 0:
             logger = Logger(file=Settings["Logs"])
+        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
         dns = DNSServer(logger=logger, Memory=memory, proxy=proxy)
         asyncio.create_task(dns.Main())
     except:
@@ -127,14 +127,19 @@ async def main():
         inputes = Inputes(Client=client, Server=dns, Settings=Settings)
         asyncio.create_task(inputes.MainLoop())
     asyncio.create_task(client.Reader())
-    while True:
-        query = await client.BuildQuery(type=dns_record_types["A"], domain="example.com")
-        TTA = time.time()
-        r = await client.Send(query.ToBytes())
-        anser = await Parse.DNSMessageToJSON(r)
-        print(f"Time: {SetToString(time.time() - TTA)}\nAnsers Q: {anser.AN}")
-        #for ans in anser.GetAnsers():
-        #    print(ans)
-            
+    await asyncio.sleep(2)
+    try:
+        while True:
+            query = await client.BuildQuery(type=dns_record_types["A"], domain="example.com")
+            TTA = time.time()
+            r = await client.Send(query.ToBytes())
+            anser = await Parse.DNSMessageToJSON(r)
+            print(f"Time: {SetToString(time.time() - TTA)}\nAnsers N: {anser.AN}")
+            #for ans in anser.GetAnsers():
+            #    print(ans)
+            await asyncio.sleep(30)
+    except:
+        print(traceback.format_exc())
+
 if __name__ == "__main__":
     asyncio.run(main())

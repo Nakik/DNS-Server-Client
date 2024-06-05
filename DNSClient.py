@@ -1,7 +1,6 @@
 import socket
 from util import *
 from Socket import Socket
-import time
 
 class DNSClient():
     #Create the main connection. default is google DNS

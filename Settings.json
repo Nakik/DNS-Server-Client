@@ -2,5 +2,5 @@
     "Memory": 1,
     "Proxy": 1,
     "Logs": "DNS.log",
-    "MemoryLogs": 3
+    "MemoryLogs": 43
 }

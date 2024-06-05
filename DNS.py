@@ -73,7 +73,9 @@ def FirstPrint():
 
 FirstPrint()
 
-async def PrintInfo(Time:int=3):
+async def PrintInfo(Time:int=3, logger: Logger=None):
+    if logger is None:
+        return
     while True:
         try:
             #This is From psutil. its for checking the memory and CPU usage.
@@ -90,10 +92,11 @@ async def PrintInfo(Time:int=3):
             delta_time = time.time() - st1
             overall_cpus_percent = ((delta_proc / delta_time) * 100)
             single_cpu_percent = overall_cpus_percent * (psutil.cpu_count() or 1)
-            print(f"Memory: {Memory}\nCPU: {single_cpu_percent:.2f}%")
+            msg = f"Memory: {Memory} - CPU: {single_cpu_percent:.2f}%"
+            await logger.Print(msg)
         except:
             print(traceback.format_exc())
-            
+
 async def main():
     Settingfile = "Settings.json"
     try:
@@ -103,13 +106,11 @@ async def main():
             "Memory": 1,
             "Proxy": 1,
             "Logs": "DNS.log",
-            "MemoryLogs": 3,
+            "MemoryLogs": 43,
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     try:
         memory = False
-        if Settings["MemoryLogs"] != 0:
-            asyncio.create_task(PrintInfo(Settings["MemoryLogs"]))
         if Settings["Memory"] == 1:
             memory = True
         proxy = None
@@ -117,6 +118,10 @@ async def main():
             proxy = Proxy(FileToSave="Filters.txt")
         if Settings["Logs"] != 0:
             logger = Logger(file=Settings["Logs"])
+        else:
+            logger = None
+        if Settings["MemoryLogs"] != 0:
+            asyncio.create_task(PrintInfo(Settings["MemoryLogs"], logger=logger))
         print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
         dns = DNSServer(logger=logger, Memory=memory, proxy=proxy)
         asyncio.create_task(dns.Main())
@@ -134,7 +139,7 @@ async def main():
             TTA = time.time()
             r = await client.Send(query.ToBytes())
             anser = await Parse.DNSMessageToJSON(r)
-            print(f"Time: {SetToString(time.time() - TTA)}\nAnsers N: {anser.AN}")
+            print(f"Time: {SetToString(time.time() - TTA)}\nAnsers Number: {anser.AN}")
             #for ans in anser.GetAnsers():
             #    print(ans)
             await asyncio.sleep(30)

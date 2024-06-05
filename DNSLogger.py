@@ -11,6 +11,7 @@ class Logger():
         self.file = file
         self.loop = asyncio.get_event_loop()
         self.Console = sys.stdout
+        self.File = open(file, "a") if file else None
         self._X = True
 
     def GetTime(self):
@@ -29,8 +30,8 @@ class Logger():
         msg = ""
         msg += self.GetTime() + ' - ' + Message
         if self.file:
-            with open(self.file, "a") as f:
-                f.write(msg + '\n')
+            self.File.write(msg + '\n')
+            self.File.flush()
         else:
             self.Console.write(msg + '\n')
 
@@ -43,8 +44,8 @@ class Logger():
         if Server:
             msg += " - DNS Server: " + Server
         if self.file:
-            with open(self.file, "a") as f:
-                f.write(msg + '\n')
+            self.File.write(msg + '\n')
+            self.File.flush()
         else:
             self.Console.write(msg + '\n')
 

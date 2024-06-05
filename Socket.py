@@ -8,7 +8,7 @@ import contextvars, functools #To run the socket funcion in Asyncio.
 class Socket():
     def __init__(self, Socket: socket.socket):
         self.s = Socket
-        self.s.settimeout(0.9) #I dont know why to put this. but its making the code works.-_-
+        self.s.settimeout(0.4) #I dont know why to put this. but its making the code works.-_-
         self.loop = asyncio.get_event_loop()
         self.ex = None
     async def Run(self, fun, *args):

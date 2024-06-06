@@ -17,7 +17,7 @@ class DNSClient():
         await self.Socket.Connect((self.ip, self.port))
         while self.Kill:
             try:
-                data, _ = await self.Socket.RecvFrom()#read each data from the server. and put in the msg list.
+                data = await self.Socket.Recv()#read each data from the server. and put in the msg list.
                 if data != 0:
                     _key = data[:2]
                     self.msg[_key] = data

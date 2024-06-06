@@ -52,12 +52,16 @@ class DNSServers():
         return
     
 class DNSServer():
-    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None):
+    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None, DDOS: bool=True):
         self.logger = logger
         self.ip = ip
         self.port = port
         self.Memory = Memory
         self.proxy = proxy
+        self.DDOS = DDOS
+        if self.DDOS:
+            self.DDOSlist = {}
+
     async def Main(self):
         self.loop = asyncio.get_event_loop()
         self.Socket = DNSServers() #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
@@ -69,6 +73,26 @@ class DNSServer():
                 data, addr = await self.server_socket.RecvFrom()
             except:
                 continue
+            """
+            Ok so ddos:
+            there is a list of ips. and if you in the list. you will be blocked.
+            so if server or ip send more than 100 in a sec it will get blocked.
+            DDOSlist[ip] = (queries_number, first_Time)
+            """
+            try:
+                addr[0]
+            except:
+                continue
+            if self.DDOS and addr[0] != My_IP: #I will not ddos myself? lol.
+                if addr[0] in self.DDOSlist:
+                    if self.DDOSlist[addr[0]][0] > 100 and self.DDOSlist[addr[0]][1] - time.time() < 3:
+                        continue
+                    if self.DDOSlist[addr[0]][0] > 100:
+                        self.DDOSlist[addr[0]] = [0, time.time()]
+                    print(self.DDOSlist[addr[0]][0])
+                    self.DDOSlist[addr[0]][0] += 1
+                else:
+                    self.DDOSlist[addr[0]] = [1, time.time()]
             try:
                 asyncio.create_task(asyncio.wait_for(self.HandleQuery(data, addr), 3))#3 seconds its more than enough for DNS.
                 #Creating task for each new query is better. it just for the Send and Wait for response part. But it can be really effective.

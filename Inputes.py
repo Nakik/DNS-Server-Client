@@ -6,6 +6,8 @@ from DNSServer import DNSServer
 from util import *
 from DNSLogger import Logger
 from Proxy import Proxy
+from DNStest import SpeedTest
+import traceback
 
 class Inputes():
     def __init__(self, Client: DNSClient = None, Server: DNSServer = None, Settings: dict=None):
@@ -22,7 +24,7 @@ class Inputes():
             client = DNSClient("8.8.8.8", 53)
             self.Reader = asyncio.create_task(client.Reader()) #start the reader.
                                #Exit, DNSclient, DNsServer(Change settings...)
-        self.Global_Commands = ["exit", "client", "server"]
+        self.Global_Commands = ["exit", "client", "server", "speed"]
         self._Shorts = {
             "e": "exit",
             "c": "client",
@@ -32,7 +34,6 @@ class Inputes():
         }
         self.SubCommandsC = {
             "set": self.Set,
-            "speed": self.Speed
         }
         self.SubCommandsS = {
             "proxy": self.Proxy,
@@ -134,6 +135,11 @@ class Inputes():
             print("Proxy -> Enable/Disable proxy.")
             print("Memory -> Enable/Disable memory cache.")
             print("Logs -> Enable/Disable logs.")
+        elif command == "speed":
+            print("Speed Test commands:")
+            print("Speedtest <ip>:port=53 -> Start the Speedtest for the server.")
+            print("Speedtest Without argument -> Start the Speedtest for the current server.")
+
     async def ClientComm(self):
         print("\033[31m" + "Client is not connected.\n You want to create a new client? (y/n)" + "\033[0m")
         r = await ainput()
@@ -143,7 +149,7 @@ class Inputes():
             return False
         return
     async def ServerComm(self):
-        print("\033[31m" + "Client is not connected.\n You want to create a new client? (y/n)" + "\033[0m")
+        print("\033[31m" + "Server is not connected.\n You want to create a new Server? (y/n)" + "\033[0m")
         r = await ainput()
         if r == "y":
             self.Client = DNSServer()
@@ -170,6 +176,26 @@ class Inputes():
             elif command in self.Global_Commands:
                 self.Comm(command)
                 continue
+            if command == "speedtest":
+                ip = None
+                port = 53
+                if args:
+                    if ":" in args:
+                        ip, port = args.split(":")
+                        port = int(port)
+                    else:
+                        ip = args
+                else:
+                    if not self.Server:
+                        if (await self.ServerComm()) == False:
+                            continue
+                    ip = My_IP
+                print(f"Starting Speed Test. On: {ip}:{port}")
+                cached_time, dotcom_time, uncached_time = await SpeedTest(ip, port)
+                print("Speed Test Results:")
+                print("\033[31m" + f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
+                print("\033[32m" + f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
+                print("\033[33m" + f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question." + "\033[0m")
             elif Domain(command):
                 if not self.Client:
                     if (await self.ClientComm()) == False:
@@ -199,6 +225,7 @@ class Inputes():
                 continue
             else:
                 print("\033[31m" + "Command not found." + "\033[0m")
+
     async def Query(self, domain):
         ansers = []
         if isinstance(self.type, list):

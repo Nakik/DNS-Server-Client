@@ -21,14 +21,18 @@ import time
 import psutil
 
 ##############################################
+#Importing the classes from the files.
+#:`;:`;;;4z::;1
 from DNSClient import DNSClient
 from DNSServer import DNSServer
 from DNSLogger import Logger
 from Inputes import Inputes
 from Proxy import Proxy
 from util import *
-#This is for Proxy.
+from DNStest import SpeedTest
 
+
+#This is for Proxy.
 try:
     if True:
         import ctypes
@@ -70,6 +74,7 @@ def FirstPrint():
     print("\033[31m" + "Commands:")
     print("\033[35m" + "Client -> Send DNS queries.")
     print("\033[36m" + "Server -> Manage server; Proxy, auto anser, logs." + "\033[0m")
+    print("\033[38m" + "Speed -> Check speed of a DNS server." + "\033[0m")
 
 FirstPrint()
 
@@ -84,18 +89,29 @@ async def PrintInfo(Time:int=3, logger: Logger=None):
             process = psutil.Process(os.getpid())
             mem_info = process.memory_info()
             Memory = BytesParse(mem_info.rss)
-            st1 = time.time()
-            pt1 = process.cpu_times()
+            #st1 = time.time()
+            #pt1 = process.cpu_times()
             await asyncio.sleep(Time)
-            pt2 = process.cpu_times()
-            delta_proc = (pt2.user - pt1.user) + (pt2.system - pt1.system)
-            delta_time = time.time() - st1
-            overall_cpus_percent = ((delta_proc / delta_time) * 100)
-            single_cpu_percent = overall_cpus_percent * (psutil.cpu_count() or 1)
-            msg = f"Memory: {Memory} - CPU: {single_cpu_percent:.2f}%"
+            #pt2 = process.cpu_times()
+            #delta_proc = (pt2.user - pt1.user) + (pt2.system - pt1.system)
+            #delta_time = time.time() - st1
+            #overall_cpus_percent = ((delta_proc / delta_time) * 100)
+            #single_cpu_percent = overall_cpus_percent * (psutil.cpu_count() or 1)
+            #This CPU is not working so Skill issue. print just memory.
+            msg = f"Memory: {Memory}"# - CPU: {single_cpu_percent:.2f}%"
             await logger.Print(msg)
         except:
             print(traceback.format_exc())
+
+async def TestAndPrint(logger: Logger):
+    try:
+        cached_time, dotcom_time, uncached_time = await SpeedTest(My_IP, 53)
+        await logger.Print("Speed Test:")
+        await logger.Print(f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
+        await logger.Print(f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
+        await logger.Print(f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question.")
+    except:
+        print(traceback.format_exc())
 
 async def main():
     Settingfile = "Settings.json"
@@ -107,9 +123,11 @@ async def main():
             "Proxy": 1,
             "Logs": "DNS.log",
             "MemoryLogs": 43,
+            "DDOs": 1,
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     try:
+        DDOS = False
         memory = False
         if Settings["Memory"] == 1:
             memory = True
@@ -120,10 +138,12 @@ async def main():
             logger = Logger(file=Settings["Logs"])
         else:
             logger = None
+        if Settings["DDOs"] != 0:
+            DDOS = True
         if Settings["MemoryLogs"] != 0:
             asyncio.create_task(PrintInfo(Settings["MemoryLogs"], logger=logger))
         print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
-        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy)
+        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS)
         asyncio.create_task(dns.Main())
     except:
         print(traceback.format_exc())
@@ -132,19 +152,16 @@ async def main():
         inputes = Inputes(Client=client, Server=dns, Settings=Settings)
         asyncio.create_task(inputes.MainLoop())
     asyncio.create_task(client.Reader())
-    await asyncio.sleep(2)
-    try:
-        while True:
-            query = await client.BuildQuery(type=dns_record_types["A"], domain="example.com")
-            TTA = time.time()
-            r = await client.Send(query.ToBytes())
-            anser = await Parse.DNSMessageToJSON(r)
-            print(f"Time: {SetToString(time.time() - TTA)}\nAnsers Number: {anser.AN}")
-            #for ans in anser.GetAnsers():
-            #    print(ans)
-            await asyncio.sleep(30)
-    except:
-        print(traceback.format_exc())
+    #ask user if he want to run the speed test.
+    if logger:
+        if (await ainput("You want to run the speed test every 2 minutes? [y/n]: ")).lower() == "y":
+            try:
+                while True:
+                    await TestAndPrint(logger)
+                    await asyncio.sleep(120)
+            except:
+                print(traceback.format_exc())
+    await asyncio.sleep(10000)
 
 if __name__ == "__main__":
     asyncio.run(main())

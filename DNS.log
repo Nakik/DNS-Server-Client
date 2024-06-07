@@ -1,0 +1,6 @@
+2024-06-07 05:22:36.820137 - LocalHost:65189 - Process: (Pid:2192, Name:svchost.exe) Question: 7d85 Questions Number: 1, (beacons.gcp.gvt2.com 1)
+2024-06-07 05:22:37.586893 - LocalHost:65189 - Process: (Pid:2192, Name:svchost.exe) Question: 7d85 Questions Number: 1, (beacons.gcp.gvt2.com 1)
+2024-06-07 05:22:37.597430 - LocalHost:65189 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 7d85 Questions Number: 1, (beacons.gcp.gvt2.com 1) - Ansers Number: 2 TTA: 0.009540081024169922ms
+2024-06-07 05:22:37.616576 - LocalHost:65189 - Process: (Pid:2192, Name:svchost.exe) Anser: 7d85 Questions Number: 1, (beacons.gcp.gvt2.com 1) - Ansers Number: 2 TTA: 0.7964396476745605ms - DNS Server: 1.0.0.1
+2024-06-07 05:22:38.872794 - LocalHost:54131 - Process: (Pid:2192, Name:svchost.exe) Question: 5c6c Questions Number: 1, (ipinfo.io 1)
+2024-06-07 05:22:39.667563 - LocalHost:54131 - Process: (Pid:2192, Name:svchost.exe) Anser: 5c6c Questions Number: 1, (ipinfo.io 1) - Ansers Number: 1 TTA: 0.794769287109375ms - DNS Server: 1.0.0.1

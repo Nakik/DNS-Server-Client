@@ -45,4 +45,4 @@ async def main():
 
 asyncio.run(main())
 ```
-This Python DNS project uses the IP2Location LITE database for <a href="https://lite.ip2location.com">IP geolocation</a>.
+This Python DNS project uses the IP2Location LITE database for More info Visit: <a href="https://lite.ip2location.com">IP geolocation</a>.

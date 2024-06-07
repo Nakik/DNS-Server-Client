@@ -40,11 +40,32 @@ print = Print
 
 My_IP = get_local_ip()
 DNSServer_List = [
-("1.0.0.1",53 ),       # Cloudflare DNS
-("208.67.220.220",53 ),# OpenDNS (Cisco)
-("208.67.222.123",53 ),# OpenDNS FamilyShield
-("208.67.220.123",53 ),# OpenDNS FamilyShield
+("1.0.0.1",53),            # Cloudflare DNS
+("208.67.220.220",53),     # OpenDNS (Cisco)
+("208.67.222.123",53),     # OpenDNS FamilyShield
+("208.67.220.123",53),     # OpenDNS FamilyShield
+('8.8.8.8', 53),           # Google Public DNS (Global)
+('8.8.4.4', 53),           # Google Public DNS (Global)
+('1.1.1.1', 53),           # Cloudflare DNS (Global)
+('1.0.0.1', 53),           # Cloudflare DNS (Global)
+('208.67.222.222', 53),    # OpenDNS (Global)
+('208.67.220.220', 53),    # OpenDNS (Global)
+('9.9.9.9', 53),           # Quad9 (Global)
+('149.112.112.112', 53),   # Quad9 (Global)
+('156.154.70.1', 53),      # Neustar UltraDNS (US, Global)
+('156.154.71.1', 53),      # Neustar UltraDNS (US, Global)
+('77.88.8.8', 53),         # Yandex.DNS (Russia, Global)
+('77.88.8.1', 53),         # Yandex.DNS (Russia, Global)
+('185.228.168.9', 53),     # CleanBrowsing DNS (Europe, Global)
+('185.228.169.9', 53),     # CleanBrowsing DNS (Europe, Global)
 ] #list provided by Chat-GPT!.
+
+DNSlocations = {
+    "AU": ("1.0.0.1", 53),           # Cloudflare DNS
+    "US": ("208.67.220.220", 53),    # OpenDNS (Cisco)
+    "RU": ('77.88.8.8', 53),        # Yandex.DNS (Russia, Global)
+    "GB": ('185.228.169.9', 53),    # CleanBrowsing DNS (Europe, Global)
+}
 
 dns_record_types = {
     'A': 1,
@@ -585,3 +606,52 @@ def BytesParse(B):
         return '{0:.2f} GB'.format(B / GB)
     elif TB <= B:
         return '{0:.2f} TB'.format(B / TB)
+
+def get_country_location(country_code):
+    import pycountry
+    country = pycountry.countries.get(alpha_2=country_code)
+    print(country)
+    if country:
+        return country.name, country.latitude, country.longitude
+    else:
+        return None, None, None
+    
+def euclidean_distance(lat1, lon1, lat2, lon2):
+    return ((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2) ** 0.5
+
+def find_nearest_country(target_lat, target_lon, country_list):
+    nearest_country = None
+    min_distance = float('inf')
+
+    for country_code in country_list:
+        _, country_lat, country_lon = get_country_location(country_code)
+        if country_lat is None or country_lon is None:
+            print(f"Invalid country code: {country_code}")
+            continue
+
+        distance = euclidean_distance(target_lat, target_lon, country_lat, country_lon)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_country = country_code
+
+    return nearest_country
+
+
+def is_private_ip(ip):
+    octets = ip.split('.')
+    if len(octets) != 4:
+        return False
+    try:
+        octets = list(map(int, octets))
+    except ValueError:
+        return False
+    if (octets[0] == 10):
+        return True
+    elif (octets[0] == 172 and 16 <= octets[1] <= 31):
+        return True
+    elif (octets[0] == 192 and octets[1] == 168):
+        return True
+    elif (octets[0] == 169 and octets[1] == 254):
+        return True
+    
+    return False

@@ -10,6 +10,7 @@ from DNSLogger import Logger
 from Socket import Socket
 from Proxy import Proxy
 import traceback
+from CountryCodes import find_nearest_country
 
 #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
 #every 50 requests it will return Random socket from the list. and every 10 random. it will be back to just Best socket.
@@ -37,6 +38,14 @@ class DNSServers():
             return self.Sockets[self.NS]
         self.XS += 1 #Add 1 to counter.
         return self.Sockets[0]
+    def GetIP(self, IP: str) -> DNSClient:
+        for S in self.Sockets:
+            if S.ip == IP:
+                return S
+        client = DNSClient(IP, 53)
+        asyncio.create_task(client.Reader()) #start the reader. to read the response from the main DNS server.
+        self.Sockets = self.Sockets + (client,)
+        return self.Sockets[0]
     
     def Update(self,socket,time):
         if time < self.LastBestTime:
@@ -51,22 +60,24 @@ class DNSServers():
             await s.Close()
         return
     
-class DNSServer():
-    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None, DDOS: bool=True):
+class  DNSServer():
+    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None, DDOS: bool=True, DBipLocation=None):
         self.logger = logger
         self.ip = ip
         self.port = port
         self.Memory = Memory
         self.proxy = proxy
         self.DDOS = DDOS
+        self.DBipLocation = DBipLocation
+        self.loop = asyncio.get_event_loop()
+        self.MyLocation = None
+        self.Socket = DNSServers() #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
+        #asyncio.create_task(self.Task()) #Start task. this task set the Main_DNS as the Best DNS server. based on the anser time. #But its better to use DNSServers class. much better.
+        self.server_socket = Socket(socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
         if self.DDOS:
             self.DDOSlist = {}
 
     async def Main(self):
-        self.loop = asyncio.get_event_loop()
-        self.Socket = DNSServers() #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
-        #asyncio.create_task(self.Task()) #Start task. this task set the Main_DNS as the Best DNS server. based on the anser time. #But its better to use DNSServers class. much better.
-        self.server_socket = Socket(socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
         await self.server_socket.Bind((self.ip, self.port))
         while True:
             try:
@@ -145,7 +156,15 @@ class DNSServer():
                 Key_vault.remove(format(struct.unpack('!H', data[:2])[0], '04X')) #remove key from Key vault.
             except:
                 pass
-            socket = self.Socket.Get()
+            if self.DBipLocation:
+                country = self.DBipLocation.get_all(addr[0]).country_short
+            if is_private_ip(addr[0]):
+                country = self.MyLocation
+            if country in DNSlocations.keys():
+                BestDNScountry = find_nearest_country(country, DNSlocations.keys())
+                socket = self.Socket.GetIP(DNSlocations[BestDNScountry][0])
+            else:
+                socket = self.Socket.Get()
             TTA = time.time() #Start time counter
             Anser = await socket.Send(data) #send the request to the main DNS server. And wait for response. _><_
             #if anser != None:

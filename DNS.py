@@ -30,7 +30,7 @@ from Inputes import Inputes
 from Proxy import Proxy
 from util import *
 from DNStest import SpeedTest
-
+from Socket import Socket
 
 #This is for Proxy.
 try:
@@ -129,6 +129,7 @@ async def main():
     try:
         DDOS = False
         memory = False
+        Ip2Location = None
         if Settings["Memory"] == 1:
             memory = True
         proxy = None
@@ -142,23 +143,50 @@ async def main():
             DDOS = True
         if Settings["MemoryLogs"] != 0:
             asyncio.create_task(PrintInfo(Settings["MemoryLogs"], logger=logger))
+        if Settings["DNSQueriesBasedOnLocation"] != 0:
+            import IpDB
+            try:
+                Ip2Location = IpDB.IP2Location("IP2LOCATION-LITE-DB1.BIN")
+            except:
+                print("Cant load IP2Location DB.")
+                #make sure to download it from the site.
+                print("Download it from: https://lite.ip2location.com/")
         print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
-        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS)
+        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS, DBipLocation=Ip2Location)
         asyncio.create_task(dns.Main())
     except:
         print(traceback.format_exc())
+    await asyncio.sleep(3)
+    s = Socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+    await s.Connect(("ipinfo.io", 80))
+    await s.Send(b"GET / HTTP/1.1\r\nHost: ipinfo.io\r\n\r\n")
+    response = (await s.Recv()).decode()
+    await s.Close()
+    public_ip = json.loads(response.split("\r\n\r\n")[1])
+    MypublicIP = public_ip['ip']
+    print(MypublicIP)
+    if Ip2Location:
+        Country = Ip2Location.get_all(MypublicIP).country_short
+    dns.MyLocation = Country
     client = DNSClient(My_IP, 53)
     if True: #IDK!?
         inputes = Inputes(Client=client, Server=dns, Settings=Settings)
         asyncio.create_task(inputes.MainLoop())
     asyncio.create_task(client.Reader())
     #ask user if he want to run the speed test.
+    for Client in dns.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
+        client.AllClients.append(Client) #Add to the client list
+    try:
+        ansers = await client.GlobalDNS("epicgames.com")
+    except:
+        print(traceback.format_exc())
+    print(ansers)
     if logger:
-        if (await ainput("You want to run the speed test every 2 minutes? [y/n]: ")).lower() == "y":
+        if (await ainput("You want to run the speed test every 10 minutes? [y/n]: ")).lower() == "y":
             try:
                 while True:
                     await TestAndPrint(logger)
-                    await asyncio.sleep(120)
+                    await asyncio.sleep(600)
             except:
                 print(traceback.format_exc())
     await asyncio.sleep(10000)

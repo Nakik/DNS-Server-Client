@@ -12,6 +12,8 @@ class DNSClient():
         self.Wait_list = {}
         self.Kill = True
         self.reader = None
+        self.AllClients = []
+
     async def Reader(self):
         #start event with flag so you can end when you want. "Remember When you set flag to False. it will stop read until next Message."
         await self.Socket.Connect((self.ip, self.port))
@@ -52,3 +54,17 @@ class DNSClient():
         msg = DNSMessage(**{"!": False, "Q": [(domain, type, class_)], })
         msg.QR = 0
         return msg
+    async def GlobalDNS(self, domain: str, type: int=1, class_: int=1):
+        msg = await self.BuildQuery(type, domain, class_)
+        ansers = []
+        funcs = []
+        responses = []
+        for Server in self.AllClients:
+            funcs.append(Server.Send(msg.ToBytes()))
+        responses = await asyncio.gather(*funcs)
+        for query in responses:
+            anser = await Parse.DNSMessageToJSON(query)
+            for a in anser.GetAnsers():
+                if a.data not in ansers:
+                    ansers.append(a.data)
+        return ansers

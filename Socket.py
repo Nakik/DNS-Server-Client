@@ -44,7 +44,6 @@ class Socket():
         except:
             return 0
     async def Recv(self, timeout: int=None):
-        ctx = contextvars.copy_context()
         if timeout != None:
             fun = self.Run(self.s.recv, 1024, timeout)
         else:

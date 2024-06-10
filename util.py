@@ -40,24 +40,13 @@ print = Print
 
 My_IP = get_local_ip()
 DNSServer_List = [
-("1.0.0.1",53),            # Cloudflare DNS
-("208.67.220.220",53),     # OpenDNS (Cisco)
-("208.67.222.123",53),     # OpenDNS FamilyShield
-("208.67.220.123",53),     # OpenDNS FamilyShield
-('8.8.8.8', 53),           # Google Public DNS (Global)
-('8.8.4.4', 53),           # Google Public DNS (Global)
-('1.1.1.1', 53),           # Cloudflare DNS (Global)
-('1.0.0.1', 53),           # Cloudflare DNS (Global)
-('208.67.222.222', 53),    # OpenDNS (Global)
-('208.67.220.220', 53),    # OpenDNS (Global)
-('9.9.9.9', 53),           # Quad9 (Global)
-('149.112.112.112', 53),   # Quad9 (Global)
-('156.154.70.1', 53),      # Neustar UltraDNS (US, Global)
-('156.154.71.1', 53),      # Neustar UltraDNS (US, Global)
-('77.88.8.8', 53),         # Yandex.DNS (Russia, Global)
-('77.88.8.1', 53),         # Yandex.DNS (Russia, Global)
-('185.228.168.9', 53),     # CleanBrowsing DNS (Europe, Global)
-('185.228.169.9', 53),     # CleanBrowsing DNS (Europe, Global)
+("1.0.0.1",53 ),       # Cloudflare DNS
+("208.67.220.220",53 ),# OpenDNS (Cisco)
+("208.67.222.123",53 ),# OpenDNS FamilyShield
+("208.67.220.123",53 ),# OpenDNS FamilyShield
+('77.88.8.8', 53),     # Yandex.DNS (Russia, Global)
+('185.228.169.9', 53), # CleanBrowsing DNS (Europe, Global)
+
 ] #list provided by Chat-GPT!.
 
 DNSlocations = {
@@ -152,13 +141,6 @@ class Question():
 class DNSMessage():
     def __init__(self, **kwargs) -> None:
         self.id = kwargs.get("id", None)
-        if not self.id:
-            while True: #just for case to not get same key
-                key_ = format(random.randint(0, 0xFFFF), '04X')
-                if key_ not in Key_vault:
-                    Key_vault.append(key_)
-                    self.id = key_
-                    break
         self.QR = kwargs.get("qr") #must to be suplied
         self.OPcode = 0#normal query #rest are useless for this cleint.(0-5)
         self.AA = 0
@@ -175,6 +157,8 @@ class DNSMessage():
         self.ARcount = 0 #This project dont use this.
         self.NotFine = kwargs["!"] #to check if its got any error or not. if its True its mean it got error. and it will not save in Memory.
         #Use this Class after sing Parse(to parse the data to json For this class).
+    def __str__(self) -> str:
+        return f"DNSMessage: {self.id} {self.QR} Q: {self._questions} A: {self._ansers}"
     
     #Parse funcions.
     def HeadersToBytes(self) -> bytes:
@@ -214,6 +198,7 @@ class DNSMessage():
         x += len(question_part)
         anser_part, pointers = self.AnsersToBytes(x, pointers)
         msg += anser_part
+        msg += b"\x00" #End of the message.
         return msg
             
     def QueryToBytes(self) -> bytes:
@@ -221,6 +206,7 @@ class DNSMessage():
         msg += self.HeadersToBytes()
         question_part, x = self.QuestionToBytes()
         msg += question_part
+        msg += b"\x00" #End of the message.
         return msg
     
     def ToBytes(self) -> bytes:
@@ -258,6 +244,8 @@ def ParseDomain(data: bytes, msg:bytes):
     domain = ""
     x = 0
     while True:
+        if x == len(data):
+            break
         len_ = data[x]
         if len_ == 192: #c0 its a pointer! its mean it will point to other location in message.
             domain += ParseDomain(msg[data[x+1]:], msg) #it is possible to be (part_of_domain) (pointer) (another_part)
@@ -606,36 +594,6 @@ def BytesParse(B):
         return '{0:.2f} GB'.format(B / GB)
     elif TB <= B:
         return '{0:.2f} TB'.format(B / TB)
-
-def get_country_location(country_code):
-    import pycountry
-    country = pycountry.countries.get(alpha_2=country_code)
-    print(country)
-    if country:
-        return country.name, country.latitude, country.longitude
-    else:
-        return None, None, None
-    
-def euclidean_distance(lat1, lon1, lat2, lon2):
-    return ((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2) ** 0.5
-
-def find_nearest_country(target_lat, target_lon, country_list):
-    nearest_country = None
-    min_distance = float('inf')
-
-    for country_code in country_list:
-        _, country_lat, country_lon = get_country_location(country_code)
-        if country_lat is None or country_lon is None:
-            print(f"Invalid country code: {country_code}")
-            continue
-
-        distance = euclidean_distance(target_lat, target_lon, country_lat, country_lon)
-        if distance < min_distance:
-            min_distance = distance
-            nearest_country = country_code
-
-    return nearest_country
-
 
 def is_private_ip(ip):
     octets = ip.split('.')

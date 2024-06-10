@@ -13,6 +13,7 @@ class DNSClient():
         self.Kill = True
         self.reader = None
         self.AllClients = []
+        self.Key = 0
 
     async def Reader(self):
         #start event with flag so you can end when you want. "Remember When you set flag to False. it will stop read until next Message."
@@ -51,7 +52,15 @@ class DNSClient():
         self.Kill = False #To stop Reader Funcion.
         return
     async def BuildQuery(self, type: int=1, domain: str="example.com", class_: int=1):
-        msg = DNSMessage(**{"!": False, "Q": [(domain, type, class_)], })
+        if type == 12:
+            if len(domain.split('.')) == 4:
+                domain = '.'.join(reversed(domain.split('.'))) + '.in-addr.arpa'
+            else:
+                reversed_nibbles = ''.join(domain[::-1].replace(':', ''))
+                domain = '.'.join(reversed_nibbles) + '.ip6.arpa'
+        key_ = format(self.Key, '04X')
+        self.Key += 1
+        msg = DNSMessage(**{"id": key_, "!": False, "Q": [(domain, type, class_)], })
         msg.QR = 0
         return msg
     async def GlobalDNS(self, domain: str, type: int=1, class_: int=1):

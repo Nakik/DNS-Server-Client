@@ -69,6 +69,7 @@ class  DNSServer():
         self.proxy = proxy
         self.DDOS = DDOS
         self.DBipLocation = DBipLocation
+        self.IpsMemory = {}
         self.loop = asyncio.get_event_loop()
         self.MyLocation = None
         self.Socket = DNSServers() #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
@@ -130,7 +131,7 @@ class  DNSServer():
             if self.logger:
                 await self.logger.Log(requests, ADDRString)
                 Time = time.time()
-            if self.proxy:
+            if self.proxy and requests.NotFine is False:
                 r = self.proxy.CheckProxy(requests)
                 if r:
                     if self.logger:
@@ -143,26 +144,29 @@ class  DNSServer():
                 r, AA = memory.Check(requests)
                 if r:
                     anser = BuildAnser(requests, r, AA) #Build ansers. based on requests, with ansers from Memory. And convert to Bytes(DNS format.)
-                    try:
-                        Key_vault.remove(format(struct.unpack('!H', data[:2])[0], '04X')) #remove key from Key vault.
-                    except:
-                        pass
                     if self.logger:
                         ADDRString += " - Memory Anser"
                         await self.logger.Log(anser, ADDRString, Time=time.time()-Time)
                     await self.server_socket.Send(anser.ToBytes(), addr)#send the response to the client.
                     return
-            try:
-                Key_vault.remove(format(struct.unpack('!H', data[:2])[0], '04X')) #remove key from Key vault.
-            except:
-                pass
             if self.DBipLocation:
-                country = self.DBipLocation.get_all(addr[0]).country_short
-            if is_private_ip(addr[0]):
-                country = self.MyLocation
-            if country in DNSlocations.keys():
-                BestDNScountry = find_nearest_country(country, DNSlocations.keys())
-                socket = self.Socket.GetIP(DNSlocations[BestDNScountry][0])
+                if addr[0] in self.IpsMemory:
+                    socket = self.Socket.GetIP(self.IpsMemory[addr[0]])
+                else:
+                    try:
+                        if is_private_ip(addr[0]):
+                            country = self.MyLocation
+                        else:
+                            country = self.DBipLocation.get_all(addr[0]).country_short
+                        if country is None:
+                            socket = self.Socket.Get()
+                        else:
+                            BestDNScountry = find_nearest_country(country, DNSlocations.keys())
+                            socket = self.Socket.GetIP(DNSlocations[BestDNScountry][0])
+                            self.IpsMemory[addr[0]] = DNSlocations[BestDNScountry][0]
+                    except:
+                        print(traceback.format_exc())
+                        socket = self.Socket.Get()
             else:
                 socket = self.Socket.Get()
             TTA = time.time() #Start time counter

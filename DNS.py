@@ -180,7 +180,12 @@ async def main():
         ansers = await client.GlobalDNS("epicgames.com")
     except:
         print(traceback.format_exc())
-    print(ansers)
+    while True:
+        query = await client.BuildQuery(domain="1.1.1.1", type=dns_record_types["PTR"])
+        ansers = await client.Send(query.ToBytes())
+        an = await Parse.DNSMessageToJSON(ansers)
+        print(an)
+        await asyncio.sleep(3)
     if logger:
         if (await ainput("You want to run the speed test every 10 minutes? [y/n]: ")).lower() == "y":
             try:

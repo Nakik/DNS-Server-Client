@@ -117,14 +117,14 @@ class  DNSServer():
     async def Close(self):
         await self.server_socket.Close()
         await self.Socket.Close()
-
         return
+    
     async def HandleQuery(self, data: bytes, addr: tuple):
         try:
             Time = time.time()
             if data == 0 or not 0 == (data[:12][2] >> 7) & 1:
                 return
-            requests = await Parse.DNSMessageToJSON(data)#DNSMessage
+            requests = Parse.DNSMessageToJSON(data)#DNSMessage
             ADDRString, Process = GetAddrString(addr)
             #ADDRString = For logger.
             #Process = This to using To proxy all process DNS to same IP.
@@ -176,7 +176,7 @@ class  DNSServer():
             self.Socket.Update(socket, time.time()-TTA) #End time counter. Update the socket time
             if not 1 == (Anser[:12][2] >> 7) & 1:
                 return
-            Anser_ = await Parse.DNSMessageToJSON(Anser)#DNSMessage
+            Anser_ = Parse.DNSMessageToJSON(Anser)#DNSMessage
             if self.Memory and Anser_.NotFine is False:
                 memory.Save(Anser_)
             try:

@@ -183,7 +183,7 @@ async def main():
     while True:
         query = await client.BuildQuery(domain="1.1.1.1", type=dns_record_types["PTR"])
         ansers = await client.Send(query.ToBytes())
-        an = await Parse.DNSMessageToJSON(ansers)
+        an = Parse.DNSMessageToJSON(ansers)
         print(an)
         await asyncio.sleep(3)
     if logger:

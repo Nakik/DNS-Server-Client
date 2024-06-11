@@ -59,7 +59,7 @@ class DNSClient():
                 reversed_nibbles = ''.join(domain[::-1].replace(':', ''))
                 domain = '.'.join(reversed_nibbles) + '.ip6.arpa'
         key_ = format(self.Key, '04X')
-        self.Key += 1
+        self.Key = (self.Key + 1) % 65536
         msg = DNSMessage(**{"id": key_, "!": False, "Q": [(domain, type, class_)], })
         msg.QR = 0
         return msg
@@ -72,7 +72,7 @@ class DNSClient():
             funcs.append(Server.Send(msg.ToBytes()))
         responses = await asyncio.gather(*funcs)
         for query in responses:
-            anser = await Parse.DNSMessageToJSON(query)
+            anser = Parse.DNSMessageToJSON(query)
             for a in anser.GetAnsers():
                 if a.data not in ansers:
                     ansers.append(a.data)

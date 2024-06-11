@@ -237,13 +237,13 @@ class Inputes():
                     continue
                 query = await self.Client.BuildQuery(type=t, domain=domain)
                 r = await self.Client.Send(query.ToBytes())
-                anser = await Parse.DNSMessageToJSON(r)
+                anser = Parse.DNSMessageToJSON(r)
                 if anser.GetAnsers():
                     ansers.append(anser)
         else:
             query = await self.Client.BuildQuery(type=self.type, domain=domain)
             r = await self.Client.Send(query.ToBytes())
-            anser = await Parse.DNSMessageToJSON(r)
+            anser = Parse.DNSMessageToJSON(r)
             if anser.GetAnsers():
                 ansers.append(anser)
         return ansers

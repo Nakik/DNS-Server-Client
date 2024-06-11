@@ -405,7 +405,7 @@ def ParseNAME(offset:int, msg:bytes):
     return domain[:-1], offset + 1
 
 class Parse():
-    async def DNSMessageToJSON(msg : bytes) -> DNSMessage:
+    def DNSMessageToJSON(msg : bytes) -> DNSMessage:
         _ = {}
         _["id"] = msg[:2].hex()
         _["!"] = False

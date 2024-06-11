@@ -1,0 +1,186 @@
+2024-06-11 05:47:22.536990 - LocalHost:56863 - Process: (Pid:2192, Name:svchost.exe) Question: ef86 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:47:22.633140 - LocalHost:56863 - Process: (Pid:2192, Name:svchost.exe) Question: ef86 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:47:22.642128 - LocalHost:56863 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: ef86 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.008987903594970703ms
+2024-06-11 05:47:23.022632 - LocalHost:56863 - Process: (Pid:2192, Name:svchost.exe) Anser: ef86 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.4846456050872803ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:25.381321 - LocalHost:64357 - Process: (Pid:2192, Name:svchost.exe) Question: a76e Questions Number: 1, (ipinfo.io 1)
+2024-06-11 05:47:25.453861 - LocalHost:64357 - Process: (Pid:2192, Name:svchost.exe) Question: a76e Questions Number: 1, (ipinfo.io 1)
+2024-06-11 05:47:25.863072 - LocalHost:55398 - Process: (Pid:2192, Name:svchost.exe) Question: fb8a Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:47:25.864070 - LocalHost:64357 - Process: (Pid:2192, Name:svchost.exe) Anser: a76e Questions Number: 1, (ipinfo.io 1) - Ansers Number: 1 TTA: 0.48274946212768555ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:26.246758 - LocalHost:55398 - Process: (Pid:2192, Name:svchost.exe) Question: fb8a Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:47:26.257240 - LocalHost:64357 - Process: (Pid:2192, Name:svchost.exe) Anser: a76e Questions Number: 1, (ipinfo.io 1) - Ansers Number: 1 TTA: 0.8033792972564697ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:26.306061 - LocalHost:55398 - Process: (Pid:2192, Name:svchost.exe) Anser: fb8a Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.44199085235595703ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:26.685814 - LocalHost:55398 - Process: (Pid:2192, Name:svchost.exe) Anser: fb8a Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.4390559196472168ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:30.715046 - LocalHost:59855 - Process: (Pid:2192, Name:svchost.exe) Question: 1dbe Questions Number: 1, (datarouter.ol.epicgames.com 1)
+2024-06-11 05:47:30.821174 - LocalHost:59855 - Process: (Pid:2192, Name:svchost.exe) Question: 1dbe Questions Number: 1, (datarouter.ol.epicgames.com 1)
+2024-06-11 05:47:31.563471 - LocalHost:59855 - Process: (Pid:2192, Name:svchost.exe) Anser: 1dbe Questions Number: 1, (datarouter.ol.epicgames.com 1) - Ansers Number: 10 TTA: 0.8484246730804443ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:31.920471 - LocalHost:59855 - Process: (Pid:2192, Name:svchost.exe) Anser: 1dbe Questions Number: 1, (datarouter.ol.epicgames.com 1) - Ansers Number: 10 TTA: 1.0992963314056396ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:34.809082 - LocalHost:64743 - Process: (Pid:2192, Name:svchost.exe) Question: b9af Questions Number: 1, (github.com 1)
+2024-06-11 05:47:34.943051 - LocalHost:64743 - Process: (Pid:2192, Name:svchost.exe) Question: b9af Questions Number: 1, (github.com 1)
+2024-06-11 05:47:35.259186 - LocalHost:56971 - Process: (Pid:2192, Name:svchost.exe) Question: 8cae Questions Number: 1, (g.whatsapp.net 1)
+2024-06-11 05:47:35.265716 - LocalHost:64743 - Process: (Pid:2192, Name:svchost.exe) Anser: b9af Questions Number: 1, (github.com 1) - Ansers Number: 1 TTA: 0.4566338062286377ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:35.595965 - LocalHost:56971 - Process: (Pid:2192, Name:svchost.exe) Question: 8cae Questions Number: 1, (g.whatsapp.net 1)
+2024-06-11 05:47:35.654968 - LocalHost:64743 - Process: (Pid:2192, Name:svchost.exe) Anser: b9af Questions Number: 1, (github.com 1) - Ansers Number: 1 TTA: 0.7119169235229492ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:35.678958 - LocalHost:54808 - Process: (Pid:2192, Name:svchost.exe) Question: 6dcb Questions Number: 1, (fd.api.iris.microsoft.com 1)
+2024-06-11 05:47:36.072485 - LocalHost:56971 - Process: (Pid:2192, Name:svchost.exe) Anser: 8cae Questions Number: 1, (g.whatsapp.net 1) - Ansers Number: 2 TTA: 0.4755234718322754ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:36.168592 - LocalHost:54808 - Process: (Pid:2192, Name:svchost.exe) Question: 6dcb Questions Number: 1, (fd.api.iris.microsoft.com 1)
+2024-06-11 05:47:36.483483 - LocalHost:64177 - Process: (Pid:2192, Name:svchost.exe) Question: 1f37 Questions Number: 1, (pf.pipe.aria.microsoft.com 1)
+2024-06-11 05:47:36.507159 - LocalHost:54808 - Process: (Pid:2192, Name:svchost.exe) Anser: 6dcb Questions Number: 1, (fd.api.iris.microsoft.com 1) - Ansers Number: 3 TTA: 0.8282005786895752ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:36.823011 - LocalHost:51070 - Process: (Pid:2192, Name:svchost.exe) Question: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1)
+2024-06-11 05:47:36.880684 - LocalHost:54808 - Process: (Pid:2192, Name:svchost.exe) Anser: 6dcb Questions Number: 1, (fd.api.iris.microsoft.com 1) - Ansers Number: 3 TTA: 0.7120919227600098ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:36.931459 - LocalHost:56198 - Process: (Pid:2192, Name:svchost.exe) Question: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1)
+2024-06-11 05:47:37.309360 - LocalHost:51522 - Process: (Pid:2192, Name:svchost.exe) Question: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1)
+2024-06-11 05:47:37.310357 - LocalHost:64177 - Process: (Pid:2192, Name:svchost.exe) Anser: 1f37 Questions Number: 1, (pf.pipe.aria.microsoft.com 1) - Ansers Number: 3 TTA: 0.8268747329711914ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:37.635227 - LocalHost:54413 - Process: (Pid:2192, Name:svchost.exe) Question: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1)
+2024-06-11 05:47:37.637707 - LocalHost:51070 - Process: (Pid:2192, Name:svchost.exe) Anser: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1) - Ansers Number: 3 TTA: 0.8146958351135254ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:37.743578 - LocalHost:51070 - Process: (Pid:2192, Name:svchost.exe) Question: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1)
+2024-06-11 05:47:37.743578 - LocalHost:51070 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1) - Ansers Number: 3
+2024-06-11 05:47:37.745085 - LocalHost:56198 - Process: (Pid:2192, Name:svchost.exe) Anser: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.8125815391540527ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:38.101583 - LocalHost:51522 - Process: (Pid:2192, Name:svchost.exe) Question: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1)
+2024-06-11 05:47:38.103579 - LocalHost:51522 - Process: (Pid:2192, Name:svchost.exe) Anser: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1) - Ansers Number: 0 TTA: 0.7942190170288086ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:38.333575 - LocalHost:56198 - Process: (Pid:2192, Name:svchost.exe) Question: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1)
+2024-06-11 05:47:38.333575 - LocalHost:56198 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1) - Ansers Number: 3
+2024-06-11 05:47:38.343133 - LocalHost:54413 - Process: (Pid:2192, Name:svchost.exe) Anser: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1) - Ansers Number: 0 TTA: 0.7079060077667236ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:38.522385 - LocalHost:64177 - Process: (Pid:2192, Name:svchost.exe) Question: 1f37 Questions Number: 1, (pf.pipe.aria.microsoft.com 1)
+2024-06-11 05:47:38.522385 - LocalHost:64177 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 1f37 Questions Number: 1, (pf.pipe.aria.microsoft.com 1) - Ansers Number: 3
+2024-06-11 05:47:38.534138 - LocalHost:51522 - Process: (Pid:2192, Name:svchost.exe) Anser: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1) - Ansers Number: 0 TTA: 0.4325542449951172ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:38.864150 - LocalHost:54413 - Process: (Pid:2192, Name:svchost.exe) Question: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1)
+2024-06-11 05:47:39.348227 - LocalHost:51329 - Process: (Pid:2192, Name:svchost.exe) Question: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1)
+2024-06-11 05:47:39.369393 - LocalHost:54413 - Process: (Pid:2192, Name:svchost.exe) Anser: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1) - Ansers Number: 0 TTA: 0.5052428245544434ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:39.731013 - LocalHost:51329 - Process: (Pid:2192, Name:svchost.exe) Question: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1)
+2024-06-11 05:47:40.058203 - LocalHost:54413 - Process: None Question: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1)
+2024-06-11 05:47:40.064697 - LocalHost:51329 - Process: (Pid:2192, Name:svchost.exe) Anser: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1) - Ansers Number: 5 TTA: 0.7164700031280518ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:40.151783 - LocalHost:56198 - Process: None Question: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1)
+2024-06-11 05:47:40.151783 - LocalHost:56198 - Process: None - Memory Anser Anser: 77a2 Questions Number: 1, (us-teams.events.data.microsoft.com 1) - Ansers Number: 3
+2024-06-11 05:47:40.157969 - LocalHost:51329 - Process: (Pid:2192, Name:svchost.exe) Anser: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1) - Ansers Number: 5 TTA: 0.4269566535949707ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:40.477680 - LocalHost:51522 - Process: None Question: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1)
+2024-06-11 05:47:40.533839 - LocalHost:54413 - Process: None Anser: b565 Questions Number: 1, (collector.azure.eaglex.ic.gov 1) - Ansers Number: 0 TTA: 0.4746370315551758ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:40.771128 - LocalHost:51070 - Process: None Question: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1)
+2024-06-11 05:47:40.772125 - LocalHost:51070 - Process: None - Memory Anser Anser: 0e93 Questions Number: 1, (tb.pipe.aria.microsoft.com 1) - Ansers Number: 3 TTA: 0.0009975433349609375ms
+2024-06-11 05:47:40.958180 - LocalHost:53795 - Process: (Pid:2192, Name:svchost.exe) Question: 5597 Questions Number: 1, (catalog.gamepass.com 1)
+2024-06-11 05:47:40.984741 - LocalHost:51522 - Process: None Anser: 8bb7 Questions Number: 1, (collector.azure.microsoft.scloud 1) - Ansers Number: 0 TTA: 0.5070602893829346ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:41.286821 - LocalHost:53795 - Process: (Pid:2192, Name:svchost.exe) Question: 5597 Questions Number: 1, (catalog.gamepass.com 1)
+2024-06-11 05:47:41.605011 - LocalHost:53795 - Process: (Pid:2192, Name:svchost.exe) Anser: 5597 Questions Number: 1, (catalog.gamepass.com 1) - Ansers Number: 4 TTA: 0.6468312740325928ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:41.750082 - LocalHost:56705 - Process: (Pid:2192, Name:svchost.exe) Question: 304d Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:41.762557 - LocalHost:53795 - Process: (Pid:2192, Name:svchost.exe) Anser: 5597 Questions Number: 1, (catalog.gamepass.com 1) - Ansers Number: 4 TTA: 0.4757363796234131ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:42.095070 - LocalHost:59666 - Process: (Pid:2192, Name:svchost.exe) Question: 64bb Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:42.436271 - LocalHost:56705 - Process: (Pid:2192, Name:svchost.exe) Anser: 304d Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.6861891746520996ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:42.608964 - LocalHost:59666 - Process: (Pid:2192, Name:svchost.exe) Anser: 64bb Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.5138943195343018ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:42.850211 - LocalHost:51329 - Process: None Question: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1)
+2024-06-11 05:47:42.850211 - LocalHost:51329 - Process: None - Memory Anser Anser: 310e Questions Number: 1, (res.public.onecdn.static.microsoft 1) - Ansers Number: 5
+2024-06-11 05:47:43.024693 - LocalHost:53795 - Process: None Question: 5597 Questions Number: 1, (catalog.gamepass.com 1)
+2024-06-11 05:47:43.025197 - LocalHost:53795 - Process: None - Memory Anser Anser: 5597 Questions Number: 1, (catalog.gamepass.com 1) - Ansers Number: 4 TTA: 0.0005040168762207031ms
+2024-06-11 05:47:43.661186 - LocalHost:56705 - Process: (Pid:22164, Name:FortniteClient-Win64-Shipping.exe) Question: 304d Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:43.848061 - LocalHost:59666 - Process: None Question: 64bb Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:44.186869 - LocalHost:56705 - Process: (Pid:22164, Name:FortniteClient-Win64-Shipping.exe) Anser: 304d Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.5256829261779785ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:44.526585 - LocalHost:59666 - Process: None Anser: 64bb Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.6775264739990234ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:45.285557 - LocalHost:53795 - Process: None Question: 5597 Questions Number: 1, (catalog.gamepass.com 1)
+2024-06-11 05:47:45.285557 - LocalHost:53795 - Process: None - Memory Anser Anser: 5597 Questions Number: 1, (catalog.gamepass.com 1) - Ansers Number: 4
+2024-06-11 05:47:46.110022 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Question: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:47:46.281403 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Question: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:47:46.578468 - LocalHost:59666 - Process: None Question: 64bb Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:46.584962 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Anser: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.47494006156921387ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:46.897270 - LocalHost:56705 - Process: (Pid:22164, Name:FortniteClient-Win64-Shipping.exe) Question: 304d Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:46.910763 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Anser: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.6293599605560303ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:47.036987 - LocalHost:59666 - Process: None Anser: 64bb Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.45851826667785645ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:47.381429 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Question: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:47:47.382426 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8
+2024-06-11 05:47:47.383423 - LocalHost:56705 - Process: (Pid:22164, Name:FortniteClient-Win64-Shipping.exe) Anser: 304d Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.48615360260009766ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:47.726988 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Question: 162b Questions Number: 1, (arc.msn.com 1)
+2024-06-11 05:47:47.912940 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Question: 162b Questions Number: 1, (arc.msn.com 1)
+2024-06-11 05:47:48.207083 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Anser: 162b Questions Number: 1, (arc.msn.com 1) - Ansers Number: 3 TTA: 0.48009490966796875ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:48.538861 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Anser: 162b Questions Number: 1, (arc.msn.com 1) - Ansers Number: 3 TTA: 0.6259205341339111ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:48.669952 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Question: 162b Questions Number: 1, (arc.msn.com 1)
+2024-06-11 05:47:48.670949 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 162b Questions Number: 1, (arc.msn.com 1) - Ansers Number: 3 TTA: 0.000997304916381836ms
+2024-06-11 05:47:49.015433 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) Question: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:47:49.017432 - LocalHost:49346 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: d3e2 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8
+2024-06-11 05:47:49.843584 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) Question: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1)
+2024-06-11 05:47:50.169948 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) Question: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1)
+2024-06-11 05:47:50.367411 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) Anser: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.523827075958252ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:50.639220 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) Question: 162b Questions Number: 1, (arc.msn.com 1)
+2024-06-11 05:47:50.639220 - LocalHost:51551 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 162b Questions Number: 1, (arc.msn.com 1) - Ansers Number: 3
+2024-06-11 05:47:50.650716 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) Anser: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.48076844215393066ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:50.980557 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) Question: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1)
+2024-06-11 05:47:50.980557 - LocalHost:57789 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1) - Ansers Number: 8
+2024-06-11 05:47:52.002912 - LocalHost:49382 - Process: (Pid:2192, Name:svchost.exe) Question: 553b Questions Number: 1, (discord.com 1)
+2024-06-11 05:47:52.605123 - LocalHost:49382 - Process: (Pid:2192, Name:svchost.exe) Question: 553b Questions Number: 1, (discord.com 1)
+2024-06-11 05:47:52.606121 - LocalHost:49382 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 553b Questions Number: 1, (discord.com 1) - Ansers Number: 5 TTA: 0.000997781753540039ms
+2024-06-11 05:47:52.617317 - LocalHost:49382 - Process: (Pid:2192, Name:svchost.exe) Anser: 553b Questions Number: 1, (discord.com 1) - Ansers Number: 5 TTA: 0.6144046783447266ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:52.811090 - LocalHost:57789 - Process: None Question: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1)
+2024-06-11 05:47:52.812088 - LocalHost:57789 - Process: None - Memory Anser Anser: 43ba Questions Number: 1, (account-public-service-prod03.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.000997781753540039ms
+2024-06-11 05:47:53.422064 - LocalHost:49382 - Process: None Question: 553b Questions Number: 1, (discord.com 1)
+2024-06-11 05:47:53.422064 - LocalHost:49382 - Process: None - Memory Anser Anser: 553b Questions Number: 1, (discord.com 1) - Ansers Number: 5
+2024-06-11 05:47:54.449774 - LocalHost:49382 - Process: None Question: 553b Questions Number: 1, (discord.com 1)
+2024-06-11 05:47:54.449774 - LocalHost:49382 - Process: None - Memory Anser Anser: 553b Questions Number: 1, (discord.com 1) - Ansers Number: 5
+2024-06-11 05:47:56.078010 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) Question: 855e Questions Number: 1, (clients4.google.com 1)
+2024-06-11 05:47:56.353159 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) Question: 855e Questions Number: 1, (clients4.google.com 1)
+2024-06-11 05:47:56.675929 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) Anser: 855e Questions Number: 1, (clients4.google.com 1) - Ansers Number: 2 TTA: 0.5979194641113281ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:56.804959 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) Question: 855e Questions Number: 1, (clients4.google.com 1)
+2024-06-11 05:47:56.805971 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 855e Questions Number: 1, (clients4.google.com 1) - Ansers Number: 2 TTA: 0.001010894775390625ms
+2024-06-11 05:47:56.879076 - LocalHost:64576 - Process: (Pid:2192, Name:svchost.exe) Anser: 855e Questions Number: 1, (clients4.google.com 1) - Ansers Number: 2 TTA: 0.5259172916412354ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:57.154796 - LocalHost:55504 - Process: (Pid:2192, Name:svchost.exe) Question: 4d26 Questions Number: 1, (collector.github.com 1)
+2024-06-11 05:47:57.493521 - LocalHost:55504 - Process: (Pid:2192, Name:svchost.exe) Question: 4d26 Questions Number: 1, (collector.github.com 1)
+2024-06-11 05:47:57.703062 - LocalHost:55504 - Process: (Pid:2192, Name:svchost.exe) Anser: 4d26 Questions Number: 1, (collector.github.com 1) - Ansers Number: 2 TTA: 0.5482659339904785ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:57.986128 - LocalHost:55504 - Process: (Pid:2192, Name:svchost.exe) Anser: 4d26 Questions Number: 1, (collector.github.com 1) - Ansers Number: 2 TTA: 0.49260640144348145ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:58.309289 - LocalHost:59453 - Process: (Pid:2192, Name:svchost.exe) Question: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1)
+2024-06-11 05:47:58.521890 - LocalHost:59453 - Process: (Pid:2192, Name:svchost.exe) Question: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1)
+2024-06-11 05:47:58.771384 - LocalHost:64057 - Process: (Pid:2192, Name:svchost.exe) Question: 33cd Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:58.814889 - LocalHost:59453 - Process: (Pid:2192, Name:svchost.exe) Anser: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1) - Ansers Number: 10 TTA: 0.5055999755859375ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:59.098964 - LocalHost:55504 - Process: None Question: 4d26 Questions Number: 1, (collector.github.com 1)
+2024-06-11 05:47:59.098964 - LocalHost:55504 - Process: None - Memory Anser Anser: 4d26 Questions Number: 1, (collector.github.com 1) - Ansers Number: 2
+2024-06-11 05:47:59.125071 - LocalHost:59453 - Process: (Pid:2192, Name:svchost.exe) Anser: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1) - Ansers Number: 10 TTA: 0.6031813621520996ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:59.221477 - LocalHost:54300 - Process: (Pid:2192, Name:svchost.exe) Question: f014 Questions Number: 1, (alive.github.com 1)
+2024-06-11 05:47:59.342975 - LocalHost:64057 - Process: (Pid:2192, Name:svchost.exe) Anser: 33cd Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.5715906620025635ms - DNS Server: 1.0.0.1
+2024-06-11 05:47:59.550908 - LocalHost:59440 - Process: (Pid:2192, Name:svchost.exe) Question: 3c00 Questions Number: 1, (api.github.com 1)
+2024-06-11 05:47:59.875722 - LocalHost:59700 - Process: (Pid:2192, Name:svchost.exe) Question: bd1d Questions Number: 1, (wpad.home 1)
+2024-06-11 05:47:59.885019 - LocalHost:54300 - Process: (Pid:2192, Name:svchost.exe) Anser: f014 Questions Number: 1, (alive.github.com 1) - Ansers Number: 2 TTA: 0.6635427474975586ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:00.001387 - LocalHost:54300 - Process: (Pid:2192, Name:svchost.exe) Question: f014 Questions Number: 1, (alive.github.com 1)
+2024-06-11 05:48:00.001387 - LocalHost:54300 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: f014 Questions Number: 1, (alive.github.com 1) - Ansers Number: 2
+2024-06-11 05:48:00.013880 - LocalHost:59440 - Process: (Pid:2192, Name:svchost.exe) Anser: 3c00 Questions Number: 1, (api.github.com 1) - Ansers Number: 1 TTA: 0.4619734287261963ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:00.328139 - LocalHost:59440 - Process: (Pid:2192, Name:svchost.exe) Question: 3c00 Questions Number: 1, (api.github.com 1)
+2024-06-11 05:48:00.329136 - LocalHost:59440 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 3c00 Questions Number: 1, (api.github.com 1) - Ansers Number: 1 TTA: 0.0009970664978027344ms
+2024-06-11 05:48:00.354936 - LocalHost:59700 - Process: (Pid:2192, Name:svchost.exe) Anser: bd1d Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.4792141914367676ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:00.799446 - LocalHost:59453 - Process: None Question: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1)
+2024-06-11 05:48:00.800443 - LocalHost:59453 - Process: None - Memory Anser Anser: d348 Questions Number: 1, (github-cloud.s3.amazonaws.com 1) - Ansers Number: 10 TTA: 0.0009970664978027344ms
+2024-06-11 05:48:01.143233 - LocalHost:64057 - Process: None Question: 33cd Questions Number: 1, (wpad.home 1)
+2024-06-11 05:48:01.268477 - LocalHost:59700 - Process: None Question: bd1d Questions Number: 1, (wpad.home 1)
+2024-06-11 05:48:01.594888 - LocalHost:54300 - Process: None Question: f014 Questions Number: 1, (alive.github.com 1)
+2024-06-11 05:48:01.595393 - LocalHost:54300 - Process: None - Memory Anser Anser: f014 Questions Number: 1, (alive.github.com 1) - Ansers Number: 2 TTA: 0.0005042552947998047ms
+2024-06-11 05:48:01.936561 - LocalHost:59440 - Process: None Question: 3c00 Questions Number: 1, (api.github.com 1)
+2024-06-11 05:48:01.936561 - LocalHost:59440 - Process: None - Memory Anser Anser: 3c00 Questions Number: 1, (api.github.com 1) - Ansers Number: 1
+2024-06-11 05:48:01.937561 - LocalHost:64057 - Process: None Anser: 33cd Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.7943284511566162ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:02.042481 - LocalHost:59700 - Process: None Anser: bd1d Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.7740042209625244ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:04.498478 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) Question: 5d12 Questions Number: 1, (www.netflix.com 1)
+2024-06-11 05:48:04.781974 - Memory: 50.69 MB
+2024-06-11 05:48:04.833032 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) Question: 5d12 Questions Number: 1, (www.netflix.com 1)
+2024-06-11 05:48:05.192932 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) Question: 5d12 Questions Number: 1, (www.netflix.com 1)
+2024-06-11 05:48:05.193929 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) - Memory Anser Anser: 5d12 Questions Number: 1, (www.netflix.com 1) - Ansers Number: 6
+2024-06-11 05:48:05.252701 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) Anser: 5d12 Questions Number: 1, (www.netflix.com 1) - Ansers Number: 6 TTA: 0.7542233467102051ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:05.612428 - LocalHost:51524 - Process: (Pid:2192, Name:svchost.exe) Anser: 5d12 Questions Number: 1, (www.netflix.com 1) - Ansers Number: 6 TTA: 0.7793960571289062ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:14.824751 - LocalHost:57345 - Process: (Pid:2192, Name:svchost.exe) Question: c5dd Questions Number: 1, (chatgpt.com 1)
+2024-06-11 05:48:15.051393 - LocalHost:57345 - Process: (Pid:2192, Name:svchost.exe) Question: c5dd Questions Number: 1, (chatgpt.com 1)
+2024-06-11 05:48:15.384947 - LocalHost:57345 - Process: (Pid:2192, Name:svchost.exe) Anser: c5dd Questions Number: 1, (chatgpt.com 1) - Ansers Number: 2 TTA: 0.5601959228515625ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:15.733035 - LocalHost:57345 - Process: (Pid:2192, Name:svchost.exe) Anser: c5dd Questions Number: 1, (chatgpt.com 1) - Ansers Number: 2 TTA: 0.6816413402557373ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:31.461931 - LocalHost:57907 - Process: (Pid:2192, Name:svchost.exe) Question: c516 Questions Number: 1, (ssl.gstatic.com 1)
+2024-06-11 05:48:31.669568 - LocalHost:57907 - Process: (Pid:2192, Name:svchost.exe) Question: c516 Questions Number: 1, (ssl.gstatic.com 1)
+2024-06-11 05:48:32.147141 - LocalHost:57907 - Process: (Pid:2192, Name:svchost.exe) Anser: c516 Questions Number: 1, (ssl.gstatic.com 1) - Ansers Number: 1 TTA: 0.6852097511291504ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:32.455662 - LocalHost:57907 - Process: (Pid:2192, Name:svchost.exe) Anser: c516 Questions Number: 1, (ssl.gstatic.com 1) - Ansers Number: 1 TTA: 0.7860934734344482ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:41.913846 - LocalHost:52366 - Process: (Pid:2192, Name:svchost.exe) Question: cc87 Questions Number: 1, (logs.netflix.com 1)
+2024-06-11 05:48:42.199434 - LocalHost:52366 - Process: (Pid:2192, Name:svchost.exe) Question: cc87 Questions Number: 1, (logs.netflix.com 1)
+2024-06-11 05:48:42.787384 - LocalHost:52366 - Process: (Pid:2192, Name:svchost.exe) Anser: cc87 Questions Number: 1, (logs.netflix.com 1) - Ansers Number: 6 TTA: 0.5879497528076172ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:43.140882 - LocalHost:52432 - Process: (Pid:2192, Name:svchost.exe) Question: c144 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:48:43.431579 - LocalHost:52432 - Process: (Pid:2192, Name:svchost.exe) Question: c144 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:48:43.911694 - LocalHost:52432 - Process: (Pid:2192, Name:svchost.exe) Anser: c144 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.7708122730255127ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:44.253231 - LocalHost:52432 - Process: (Pid:2192, Name:svchost.exe) Anser: c144 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.8216519355773926ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:47.398285 - LocalHost:62888 - Process: (Pid:2192, Name:svchost.exe) Question: 6ca7 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:48:47.659486 - LocalHost:62888 - Process: (Pid:2192, Name:svchost.exe) Question: 6ca7 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1)
+2024-06-11 05:48:47.796489 - Memory: 51.18 MB
+2024-06-11 05:48:47.920507 - LocalHost:62888 - Process: (Pid:2192, Name:svchost.exe) Anser: 6ca7 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.5222218036651611ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:48.232859 - LocalHost:62888 - Process: (Pid:2192, Name:svchost.exe) Anser: 6ca7 Questions Number: 1, (account-public-service-prod.ol.epicgames.com 1) - Ansers Number: 8 TTA: 0.5733730792999268ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:52.601880 - LocalHost:50972 - Process: (Pid:2192, Name:svchost.exe) Question: 3d52 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:48:52.861186 - LocalHost:50972 - Process: (Pid:2192, Name:svchost.exe) Question: 3d52 Questions Number: 1, (mobile.events.data.microsoft.com 1)
+2024-06-11 05:48:53.123354 - LocalHost:50972 - Process: (Pid:2192, Name:svchost.exe) Anser: 3d52 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.5214745998382568ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:53.482814 - LocalHost:50972 - Process: (Pid:2192, Name:svchost.exe) Anser: 3d52 Questions Number: 1, (mobile.events.data.microsoft.com 1) - Ansers Number: 3 TTA: 0.6216278076171875ms - DNS Server: 1.0.0.1
+2024-06-11 05:48:59.355872 - LocalHost:62713 - Process: (Pid:2192, Name:svchost.exe) Question: cc5c Questions Number: 1, (wpad.home 1)
+2024-06-11 05:48:59.964878 - LocalHost:62713 - Process: (Pid:2192, Name:svchost.exe) Anser: cc5c Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.6090052127838135ms - DNS Server: 1.0.0.1
+2024-06-11 05:49:00.365203 - LocalHost:57394 - Process: (Pid:2192, Name:svchost.exe) Question: 446e Questions Number: 1, (wpad.home 1)
+2024-06-11 05:49:00.949024 - LocalHost:57394 - Process: (Pid:2192, Name:svchost.exe) Anser: 446e Questions Number: 1, (wpad.home 1) - Ansers Number: 0 TTA: 0.5838203430175781ms - DNS Server: 1.0.0.1

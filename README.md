@@ -29,7 +29,7 @@ Default settings are:
 Memory On<br>
 Proxy On<br>
 Logs File = DNS.log<br>
-MemoryLogs": 43 sec<br>
+MemoryLogs 43 sec<br>
 DDOs On<br>
 DNSQueriesBasedOnLocation On<br>
 blockAD On<br>

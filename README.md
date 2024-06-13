@@ -37,9 +37,9 @@ BlockMalicious On<br>
 BlockSuspicious On<br>
 BlockAdvertising On<br>
 
-1 means the feature is On, and 0 means it is Off.
-Logs - Refers to the file. 0 means logging is off.
-MemoryLogs - Refers to time. 0 means memory logging is off.
+1 means the feature is On, and 0 means it is Off.<br>
+Logs - Refers to the file. 0 means logging is off.<br>
+MemoryLogs - Refers to time. 0 means memory logging is off.<br>
 ### Example
 
 Below is a simple example demonstrating how to use the DNS client in an asyncio context:

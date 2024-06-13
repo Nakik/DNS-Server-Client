@@ -137,6 +137,7 @@ class  DNSServer():
             #its 1ms on my computer: intel-I7-9700 | Memory 2400Mhz.
             #If the domain is Inside the List it can take even less. depends on the location of the domain in the list.(Start will be instant.)
             domain = requests.GetQuestions()[0].domain
+            t = time.time()
             if self.BlockDomain:
                 if self.BlockDomain.CheckDomain(domain):
                     question = requests.GetQuestions()[0]
@@ -144,6 +145,7 @@ class  DNSServer():
                     r = [(question.domain, question.type, question.Class, 120, data)]
                     await self.server_socket.Send(BuildAnser(requests, r, 1).ToBytes(), addr)
                     return
+            print(time.time()-t)
             if self.proxy and requests.NotFine is False:
                 r = self.proxy.CheckProxy(requests)
                 if r:

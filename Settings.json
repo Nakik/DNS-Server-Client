@@ -6,7 +6,7 @@
     "DDOs": 1,
     "DNSQueriesBasedOnLocation": 1,
     "blockAD": 1,
-    "BlockMalicious": 1,
+    "BlockMalicious": 0,
     "BlockSuspicious": 1,
     "BlockAdvertising": 1
 }

@@ -1,6 +1,8 @@
 import asyncio
 import aiohttp #To download from links
 import os #For the folder making.
+import time
+import mmap
 
 def convert_list_to_binary(filename):
     try:
@@ -56,42 +58,82 @@ Types_TO_block= {
     ],
 }
 
+def openfile(file):
+    with open(file, 'r+b') as f:
+        mmapped_file = mmap.mmap(f.fileno(), 0)
+        data = mmapped_file.read()
+        mmapped_file.close()
+    return data
 class BlockDomain():
     def __init__(self, types: list):
         self.Lists = []
         folder = "BlockList"
         if not (os.path.exists(folder) and os.path.isdir(folder)):
             os.makedirs(folder)
+        Types_TO_download = []
         for type in types:
-            if type in Types_TO_block:
+            if type in Types_TO_block.keys():
                 try:
-                    self.Lists.append(open(f"BlockList/{type}.txt", "rb").read().split(b"\n"))
+                    open(f"BlockList/{type}.txt", "r").close()
+                    self.Lists.append(f"BlockList/{type}.txt")
                 except:
-                    asyncio.create_task(self.DownloadList(type))
+                    Types_TO_download.append(type)
+        asyncio.create_task(self.DownloadLists(Types_TO_download))
 
     def CheckDomain(self, domain: str):
-        domain = domain.encode('utf-8')
+        #Binary_Domain = ''.join(format(ord(char), '08b') for char in domain)
+        Binary_Domain = domain.encode("utf-8")
         for list in self.Lists:
-            if domain in list:
+            try:
+                Z = openfile(list).split(b"\n")
+            except FileNotFoundError:
+                print("Please Restart Up to Re-download the files.")
+                pass #You deleted the file. restart app to fix.
+            if Binary_Domain in Z:
                 return True
         return False
+    async def DownloadLists(self, list: list):
+        for type in list:
+            await self.DownloadList(type)
     async def DownloadList(self, type: str):
         domains = ""
+        print(f"Downloading {type} list.")
+        Chunk = ""
+        x = 0
+        total_lines = 0
+
         async with aiohttp.ClientSession() as session:
             for link in Types_TO_block[type]:
                 async with session.get(link) as response:
                     b = await response.text()
-                    for i in b.split("\n"):
-                        if i.startswith("#"):
-                            continue
-                        if i == "\n" or i == "":
+                    lines = b.split("\n")
+                    total_lines += len(lines)  # Update the total number of lines dynamically
+                    for i in lines:
+                        if i == "\n" or i == "" or i[0] == "#":
                             continue
                         try:
-                            domain = (i.split(" ")[1].split(" ")[0].split("\n")[0] + "\n").replace("www.", "")
-                            domains += domain
-                        except:
+                            Chunk += (i.split(" ")[1].split(" ")[0].split("\n")[0] + "\n")
+                        except IndexError:
                             continue
-        D = domains.encode()
-        open(f"BlockList/{type}.txt", "wb").write(D)
-        self.Lists.append(D.split(b"\n"))
+                        x += 1
+                        if x % 700 == 0:
+                            print(f"{int((x / total_lines) * 100)}% Done. {x}/{total_lines} {type} list.")
+                            domains += Chunk
+                            Chunk = ""
+            # Add remaining chunk to domains
+            if Chunk:
+                domains += Chunk
+
+        print("Start Encoding.")
+        #t = time.time()
+        #def char_to_binary(char):
+        #    return format(ord(char), '08b')
+        
+        # Create the binary representation, keeping '\n' as text
+        #binary_representation = ''.join(
+        #    char_to_binary(char) if char != '\n' else '\\n'
+        #    for char in domains
+        #)
+        open(f"BlockList/{type}.txt", "wb").write(domains.encode("utf-8"))
+        self.Lists.append(f"BlockList/{type}.txt")
         return

@@ -31,7 +31,6 @@ from Proxy import Proxy
 from util import *
 from DNStest import SpeedTest
 from Socket import Socket
-from SDNS import DNSHTTPS
 from BlockDomain import BlockDomain
 
 #This is for Proxy.
@@ -174,7 +173,7 @@ async def main():
         
     except:
         print(traceback.format_exc())
-    await asyncio.sleep(3)
+    await asyncio.sleep(13)
     s = Socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
     await s.Connect(("ipinfo.io", 80))
     await s.Send(b"GET / HTTP/1.1\r\nHost: ipinfo.io\r\n\r\n")

@@ -57,4 +57,9 @@ class Socket():
             return await self.Run(self.s.recvfrom, 1024)
         except:
             return 0, ""
-    
+    async def Accept(self):
+        try:
+            return await self.Run(self.s.accept)
+        except:
+            import traceback
+            return 0, ""

@@ -31,6 +31,8 @@ from Proxy import Proxy
 from util import *
 from DNStest import SpeedTest
 from Socket import Socket
+from SDNS import DNSHTTPS
+from BlockDomain import BlockDomain
 
 #This is for Proxy.
 try:
@@ -126,6 +128,8 @@ async def main():
             "DDOs": 1,
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
+    client = DNSClient(My_IP, 53)
+    asyncio.create_task(client.Reader())
     try:
         DDOS = False
         memory = False
@@ -151,9 +155,18 @@ async def main():
                 print("Cant load IP2Location DB.")
                 #make sure to download it from the site.
                 print("Download it from: https://lite.ip2location.com/")
+        Block_list = []
+        if Settings["BlockMalicious"] != 0:
+            Block_list.append("Malicious")
+        if Settings["BlockSuspicious"] != 0:
+            Block_list.append("Suspicious")
+        if Settings["BlockAdvertising"] != 0:
+            Block_list.append("Advertising")
+        Blocker = BlockDomain(Block_list)
         print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
-        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS, DBipLocation=Ip2Location)
+        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS, DBipLocation=Ip2Location, BlockedDomain=Blocker)
         asyncio.create_task(dns.Main())
+        
     except:
         print(traceback.format_exc())
     await asyncio.sleep(3)
@@ -164,15 +177,12 @@ async def main():
     await s.Close()
     public_ip = json.loads(response.split("\r\n\r\n")[1])
     MypublicIP = public_ip['ip']
-    print(MypublicIP)
     if Ip2Location:
         Country = Ip2Location.get_all(MypublicIP).country_short
-    dns.MyLocation = Country
-    client = DNSClient(My_IP, 53)
+        dns.MyLocation = Country
     if True: #IDK!?
         inputes = Inputes(Client=client, Server=dns, Settings=Settings)
         asyncio.create_task(inputes.MainLoop())
-    asyncio.create_task(client.Reader())
     #ask user if he want to run the speed test.
     for Client in dns.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
         client.AllClients.append(Client) #Add to the client list
@@ -180,20 +190,20 @@ async def main():
         ansers = await client.GlobalDNS("epicgames.com")
     except:
         print(traceback.format_exc())
-    while True:
-        query = await client.BuildQuery(domain="1.1.1.1", type=dns_record_types["PTR"])
-        ansers = await client.Send(query.ToBytes())
-        an = Parse.DNSMessageToJSON(ansers)
-        print(an)
-        await asyncio.sleep(3)
-    if logger:
-        if (await ainput("You want to run the speed test every 10 minutes? [y/n]: ")).lower() == "y":
-            try:
-                while True:
-                    await TestAndPrint(logger)
-                    await asyncio.sleep(600)
-            except:
-                print(traceback.format_exc())
+    #while True:
+    #    query = await client.BuildQuery(domain="1.1.1.1", type=dns_record_types["PTR"])
+    #    ansers = await client.Send(query.ToBytes())
+    #    an = Parse.DNSMessageToJSON(ansers)
+    #    print(an)
+    #    await asyncio.sleep(3)
+    #if logger:
+    #    if (await ainput("You want to run the speed test every 10 minutes? [y/n]: ")).lower() == "y":
+    #        try:
+    #            while True:
+    #                await TestAndPrint(logger)
+    #                await asyncio.sleep(600)
+    #        except:
+    #            print(traceback.format_exc())
     await asyncio.sleep(10000)
 
 if __name__ == "__main__":

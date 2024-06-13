@@ -11,6 +11,7 @@ from Socket import Socket
 from Proxy import Proxy
 import traceback
 from CountryCodes import find_nearest_country
+from BlockDomain import BlockDomain
 
 #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
 #every 50 requests it will return Random socket from the list. and every 10 random. it will be back to just Best socket.
@@ -61,7 +62,7 @@ class DNSServers():
         return
     
 class  DNSServer():
-    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None, DDOS: bool=True, DBipLocation=None):
+    def __init__(self, ip: str="0.0.0.0", port: int=53, logger: Logger=None, Memory: bool=True, proxy: Proxy=None, DDOS: bool=True, DBipLocation=None, BlockedDomain: BlockDomain=None):
         self.logger = logger
         self.ip = ip
         self.port = port
@@ -72,6 +73,7 @@ class  DNSServer():
         self.IpsMemory = {}
         self.loop = asyncio.get_event_loop()
         self.MyLocation = None
+        self.BlockDomain = BlockedDomain
         self.Socket = DNSServers() #This class is basically To know always what is the best DNS server based on TTA(Time To Anser).
         #asyncio.create_task(self.Task()) #Start task. this task set the Main_DNS as the Best DNS server. based on the anser time. #But its better to use DNSServers class. much better.
         self.server_socket = Socket(socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
@@ -121,7 +123,6 @@ class  DNSServer():
     
     async def HandleQuery(self, data: bytes, addr: tuple):
         try:
-            Time = time.time()
             if data == 0 or not 0 == (data[:12][2] >> 7) & 1:
                 return
             requests = Parse.DNSMessageToJSON(data)#DNSMessage
@@ -131,6 +132,18 @@ class  DNSServer():
             if self.logger:
                 await self.logger.Log(requests, ADDRString)
                 Time = time.time()
+            #This code is to check the block domain.
+            #IF its not its not block domain. it will take around 0.001 sec to check the domain.(1ms)
+            #its 1ms on my computer: intel-I7-9700 | Memory 2400Mhz.
+            #If the domain is Inside the List it can take even less. depends on the location of the domain in the list.(Start will be instant.)
+            domain = requests.GetQuestions()[0].domain
+            if self.BlockDomain:
+                if self.BlockDomain.CheckDomain(domain):
+                    question = requests.GetQuestions()[0]
+                    data = ExampleResponses[question.type]
+                    r = [(question.domain, question.type, question.Class, 120, data)]
+                    await self.server_socket.Send(BuildAnser(requests, r, 1).ToBytes(), addr)
+                    return
             if self.proxy and requests.NotFine is False:
                 r = self.proxy.CheckProxy(requests)
                 if r:

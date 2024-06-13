@@ -39,6 +39,7 @@ def Print(*k):
 print = Print
 
 My_IP = get_local_ip()
+
 DNSServer_List = [
 ("1.0.0.1",53 ),       # Cloudflare DNS
 ("208.67.220.220",53 ),# OpenDNS (Cisco)
@@ -97,6 +98,129 @@ dns_record_types = {
     'URI': 256,
     'CAA': 257,
     'AVC': 260
+}
+
+ExampleResponses = {
+    1: "240.0.0.1",         # Reserved for future use
+    2: "198.51.100.1",      # Reserved for documentation (TEST-NET-2)
+    3: "203.0.113.1",       # Reserved for documentation (TEST-NET-3)
+    4: "192.0.2.1",         # Reserved for documentation (TEST-NET-1)
+    5: "0.0.0.0",           # Non-routable meta-address used to designate an invalid, unknown, or non-applicable target
+    6: "255.255.255.255",   # Reserved for broadcast
+    7: "::1",               # IPv6 loopback address (used for local machine)
+    8: "::",                # IPv6 unspecified address
+    9: "2001:db8::1",       # IPv6 documentation address
+    10: "100::1",           # Reserved for future use
+    11: "fe80::1",          # Link-local address (valid only on the local link)
+    12: "fc00::1",          # Unique local address
+    13: "ff00::1",          # Multicast address
+    14: "8.8.8.8",          # Valid IP address (Google DNS server)
+    15: "example.invalid",  # Non-working domain (reserved for documentation)
+    16: "169.254.1.1",      # Link-local address (APIPA)
+    17: "192.88.99.1",      # Reserved for IPv6 to IPv4 relay
+    18: "198.18.0.1",       # Benchmarking address
+    19: "203.0.113.1",      # Documentation address (repeated for completeness)
+    20: "224.0.0.1",        # Multicast address
+    21: "255.0.0.1",        # Reserved address (part of the broadcast range)
+    22: "0:0:0:0:0:0:0:1",  # Another way to write IPv6 loopback address
+    23: "2002::1",          # 6to4 address
+    24: "2001:10::1",       # Deprecated IPv6 network (ORCHID)
+    25: "ff02::1",          # IPv6 multicast address
+    26: "192.31.196.1",     # AS112 service
+    27: "192.52.193.1",     # AMT service relay
+    28: "198.51.100.42",    # Reserved for documentation (TEST-NET-2, different address)
+    29: "203.0.113.42",     # Reserved for documentation (TEST-NET-3, different address)
+    30: "192.0.2.42",       # Reserved for documentation (TEST-NET-1, different address)
+    31: "240.0.0.2",        # Reserved for future use
+    32: "198.51.100.2",     # Reserved for documentation (TEST-NET-2)
+    33: "203.0.113.2",      # Reserved for documentation (TEST-NET-3)
+    34: "192.0.2.2",        # Reserved for documentation (TEST-NET-1)
+    35: "0.0.0.1",          # Non-routable meta-address
+    36: "255.255.255.254",  # Reserved for broadcast
+    37: "::2",              # IPv6 unspecified address variant
+    38: "2001:db8::2",      # IPv6 documentation address variant
+    39: "100::2",           # Reserved for future use
+    40: "fe80::2",          # Link-local address
+    41: "fc00::2",          # Unique local address
+    42: "ff00::2",          # Multicast address
+    43: "8.8.4.4",          # Valid IP address (Google DNS server)
+    44: "example.test",     # Non-working domain for testing
+    45: "169.254.1.2",      # Link-local address (APIPA)
+    46: "192.88.99.2",      # Reserved for IPv6 to IPv4 relay
+    47: "198.18.0.2",       # Benchmarking address
+    48: "224.0.0.2",        # Multicast address
+    49: "255.0.0.2",        # Reserved address
+    50: "0:0:0:0:0:0:0:2",  # Another IPv6 loopback variant
+    51: "2002::2",          # 6to4 address variant
+    52: "2001:10::2",       # Deprecated IPv6 network (ORCHID)
+    53: "ff02::2",          # IPv6 multicast address
+    54: "192.31.196.2",     # AS112 service
+    55: "192.52.193.2",     # AMT service relay
+    56: "198.51.100.43",    # Reserved for documentation (TEST-NET-2, another variant)
+    57: "203.0.113.43",     # Reserved for documentation (TEST-NET-3, another variant)
+    58: "192.0.2.43",       # Reserved for documentation (TEST-NET-1, another variant)
+    59: "240.0.0.3",        # Reserved for future use
+    60: "198.51.100.3",     # Reserved for documentation (TEST-NET-2)
+    61: "203.0.113.3",      # Reserved for documentation (TEST-NET-3)
+    62: "192.0.2.3",        # Reserved for documentation (TEST-NET-1)
+    63: "0.0.0.2",          # Non-routable meta-address
+    64: "255.255.255.253",  # Reserved for broadcast
+    65: "::3",              # IPv6 unspecified address variant
+    66: "2001:db8::3",      # IPv6 documentation address variant
+    67: "100::3",           # Reserved for future use
+    68: "fe80::3",          # Link-local address
+    69: "fc00::3",          # Unique local address
+    70: "ff00::3",          # Multicast address
+    71: "8.8.8.8",          # Valid IP address (Google DNS server, repeated for completeness)
+    72: "example.org",      # Non-working domain for documentation
+    73: "169.254.1.3",      # Link-local address (APIPA)
+    74: "192.88.99.3",      # Reserved for IPv6 to IPv4 relay
+    75: "198.18.0.3",       # Benchmarking address
+    76: "224.0.0.3",        # Multicast address
+    77: "255.0.0.3",        # Reserved address
+    78: "0:0:0:0:0:0:0:3",  # Another IPv6 loopback variant
+    79: "2002::3",          # 6to4 address variant
+    80: "2001:10::3",       # Deprecated IPv6 network (ORCHID)
+    81: "ff02::3",          # IPv6 multicast address
+    82: "192.31.196.3",     # AS112 service
+    83: "192.52.193.3",     # AMT service relay
+    84: "198.51.100.44",    # Reserved for documentation (TEST-NET-2, another variant)
+    85: "203.0.113.44",     # Reserved for documentation (TEST-NET-3, another variant)
+    86: "192.0.2.44",       # Reserved for documentation (TEST-NET-1, another variant)
+    87: "240.0.0.4",        # Reserved for future use
+    88: "198.51.100.4",     # Reserved for documentation (TEST-NET-2)
+    89: "203.0.113.4",      # Reserved for documentation (TEST-NET-3)
+    90: "192.0.2.4",        # Reserved for documentation (TEST-NET-1)
+    91: "0.0.0.3",          # Non-routable meta-address
+    92: "255.255.255.252",  # Reserved for broadcast
+    93: "::4",              # IPv6 unspecified address variant
+    94: "2001:db8::4",      # IPv6 unspecified address variant
+    95: "100::4",           # Reserved for future use
+    96: "fe80::4",          # Link-local address
+    97: "fc00::4",          # Unique local address
+    98: "ff00::4",          # Multicast address
+    99: "8.8.4.4",          # Valid IP address (Google DNS server, another one)
+    100: "example.com",     # Valid domain for testing
+    101: "169.254.1.4",     # Link-local address (APIPA)
+    102: "192.88.99.4",     # Reserved for IPv6 to IPv4 relay
+    103: "198.18.0.4",      # Benchmarking address
+    104: "224.0.0.4",       # Multicast address
+    105: "255.0.0.4",       # Reserved address
+    106: "0:0:0:0:0:0:0:4", # Another IPv6 loopback variant
+    107: "2002::4",         # 6to4 address variant
+    108: "2001:10::4",      # Deprecated IPv6 network (ORCHID)
+    109: "ff02::4",         # IPv6 multicast address
+    110: "192.31.196.4",    # AS112 service
+    111: "192.52.193.4",    # AMT service relay
+    112: "198.51.100.45",   # Reserved for documentation (TEST-NET-2, another variant)
+    113: "203.0.113.45",    # Reserved for documentation (TEST-NET-3, another variant)
+    114: "192.0.2.45",      # Reserved for documentation (TEST-NET-1, another variant)
+    115: "240.0.0.5",       # Reserved for future use
+    116: "198.51.100.5",    # Reserved for documentation (TEST-NET-2)
+    117: "203.0.113.5",     # Reserved for documentation (TEST-NET-3)
+    118: "192.0.2.5",       # Reserved for documentation (TEST-NET-1)
+    119: "0.0.0.4",         # Non-routable meta-address
+    120: "255.255.255.251", # Reserved for broadcast
 }
 
 Key_vault = []
@@ -362,6 +486,7 @@ def unparse_type_txt_rdata(data):
 
 def unparse_type_aaaa_rdata(data):
     # Unparse data for Type AAAA (IPv6 address)
+    print(data)
     return socket.inet_pton(socket.AF_INET6, data)
 
 def unparse_type_srv_rdata(data):

@@ -63,6 +63,12 @@ class DNSClient():
         msg = DNSMessage(**{"id": key_, "!": False, "Q": [(domain, type, class_)], })
         msg.QR = 0
         return msg
+    async def BuildResponse(self, msg: DNSMessage, anser: list):
+        key_ = format(int(msg.id, 16), '04X')
+        msg = DNSMessage(**{"id": key_, "!": True, "Q": msg.GetQuestions(), "A": anser})
+        msg.QR = 1
+        return msg
+    
     async def GlobalDNS(self, domain: str, type: int=1, class_: int=1):
         msg = await self.BuildQuery(type, domain, class_)
         ansers = []

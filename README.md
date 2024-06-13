@@ -26,16 +26,16 @@ The DNS client component can be used to send DNS queries and process the respons
 ### Settings
 The Settings is json file `Settings.json`
 Default settings are:
-Memory On \n
-Proxy On \n
-Logs File = DNS.log \n
-MemoryLogs": 43 sec \n
-DDOs On \n
-DNSQueriesBasedOnLocation On \n
-blockAD On \n
-BlockMalicious On \n
-BlockSuspicious On \n
-BlockAdvertising On \n
+Memory On<br>
+Proxy On<br>
+Logs File = DNS.log<br>
+MemoryLogs": 43 sec<br>
+DDOs On<br>
+DNSQueriesBasedOnLocation On<br>
+blockAD On<br>
+BlockMalicious On<br>
+BlockSuspicious On<br>
+BlockAdvertising On<br>
 
 1 means the feature is On, and 0 means it is Off.
 Logs - Refers to the file. 0 means logging is off.

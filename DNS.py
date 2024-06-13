@@ -132,8 +132,11 @@ async def main():
         "BlockAdvertising": 1
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
+    DNSserver = DNSServer()
+    asyncio.create_task(DNSserver.Main())
     client = DNSClient(My_IP, 53)
     asyncio.create_task(client.Reader())
+    await asyncio.sleep(4)
     try:
         DDOS = False
         memory = False
@@ -166,29 +169,40 @@ async def main():
             Block_list.append("Suspicious")
         if Settings["BlockAdvertising"] != 0:
             Block_list.append("Advertising")
-        Blocker = BlockDomain(Block_list)
-        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
-        dns = DNSServer(logger=logger, Memory=memory, proxy=proxy, DDOS=DDOS, DBipLocation=Ip2Location, BlockedDomain=Blocker)
-        asyncio.create_task(dns.Main())
+        Blocker = BlockDomain(Block_list, client=client)
+        DNSserver.logger = logger
+        DNSserver.Memory = memory
+        DNSserver.proxy = proxy
+        DNSserver.DDOS = DDOS
+        DNSserver.DBipLocation = Ip2Location
+        DNSserver.BlockDomain = Blocker
         
+        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
     except:
         print(traceback.format_exc())
-    await asyncio.sleep(13)
-    s = Socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
-    await s.Connect(("ipinfo.io", 80))
-    await s.Send(b"GET / HTTP/1.1\r\nHost: ipinfo.io\r\n\r\n")
-    response = (await s.Recv()).decode()
-    await s.Close()
-    public_ip = json.loads(response.split("\r\n\r\n")[1])
-    MypublicIP = public_ip['ip']
-    if Ip2Location:
-        Country = Ip2Location.get_all(MypublicIP).country_short
-        dns.MyLocation = Country
+    try:
+        s = Socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+        r = await client.BuildQuery(domain="ipinfo.io")
+        anser = await client.Send(r.ToBytes())
+        anser = Parse.DNSMessageToJSON(anser)
+        await s.Connect((anser._ansers[0][4], 80))
+        await s.Send(b"GET / HTTP/1.1\r\nHost: ipinfo.io\r\n\r\n")
+        s.s.settimeout(4)
+        response = (await s.Recv()).decode()
+        await s.Close()
+        public_ip = json.loads(response.split("\r\n\r\n")[1])
+        MypublicIP = public_ip['ip']
+        if Ip2Location:
+            Country = Ip2Location.get_all(MypublicIP).country_short
+            DNSserver.MyLocation = Country
+    except:
+        print(traceback.format_exc())
+        pass
     if True: #IDK!?
-        inputes = Inputes(Client=client, Server=dns, Settings=Settings)
+        inputes = Inputes(Client=client, Server=DNSserver, Settings=Settings)
         asyncio.create_task(inputes.MainLoop())
     #ask user if he want to run the speed test.
-    for Client in dns.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
+    for Client in DNSserver.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
         client.AllClients.append(Client) #Add to the client list
     try:
         ansers = await client.GlobalDNS("epicgames.com")

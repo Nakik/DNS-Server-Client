@@ -3,6 +3,9 @@ import aiohttp #To download from links
 import os #For the folder making.
 import time
 import mmap
+from DNSClient import DNSClient
+from util import *
+import aiodns
 
 def convert_list_to_binary(filename):
     try:
@@ -58,6 +61,25 @@ Types_TO_block= {
     ],
 }
 
+class resolver():
+    def __init__(self, client: DNSClient):
+        self.client = client
+    async def resolve(self, host, port, family) -> asyncio.Future:
+        type = None
+        if family == 0:
+            type = dns_record_types["A"]
+        an = await self.client.Send((await self.client.BuildQuery(type, host)).ToBytes())
+        ans = Parse.DNSMessageToJSON(an)
+        r = {
+            "hostname": host,
+            "host": ans.GetAnsers()[0].data,
+            "port": 443,
+            "family": 0,
+            "proto":0,
+            "flags": 0,
+        }
+        return [r]
+
 def openfile(file):
     with open(file, 'r+b') as f:
         mmapped_file = mmap.mmap(f.fileno(), 0)
@@ -65,7 +87,8 @@ def openfile(file):
         mmapped_file.close()
     return data
 class BlockDomain():
-    def __init__(self, types: list):
+    def __init__(self, types: list, client: DNSClient):
+        self.client = client
         self.Lists = []
         folder = "BlockList"
         if not (os.path.exists(folder) and os.path.isdir(folder)):
@@ -95,19 +118,24 @@ class BlockDomain():
     async def DownloadLists(self, list: list):
         for type in list:
             await self.DownloadList(type)
+
     async def DownloadList(self, type: str):
         domains = ""
         print(f"Downloading {type} list.")
         Chunk = ""
-        x = 0
-        total_lines = 0
+        LinkNumber = 0
+        MAX = len(Types_TO_block[type])
+        Resolver = resolver(self.client)
 
-        async with aiohttp.ClientSession() as session:
+        connector = aiohttp.TCPConnector(resolver=Resolver)
+        async with aiohttp.ClientSession(connector=connector) as session:
             for link in Types_TO_block[type]:
+                LinkNumber += 1
+                x = 0
                 async with session.get(link) as response:
                     b = await response.text()
                     lines = b.split("\n")
-                    total_lines += len(lines)  # Update the total number of lines dynamically
+                    total_lines = len(lines)  # Update the total number of lines dynamically
                     for i in lines:
                         if i == "\n" or i == "" or i[0] == "#":
                             continue
@@ -116,24 +144,14 @@ class BlockDomain():
                         except IndexError:
                             continue
                         x += 1
-                        if x % 700 == 0:
-                            print(f"{int((x / total_lines) * 100)}% Done. {x}/{total_lines} {type} list.")
+                        if x % 1700 == 0:
+                            print(f"{int((x / total_lines) * 100)}% Done. Link {LinkNumber}/{MAX} {type} list.")
                             domains += Chunk
                             Chunk = ""
             # Add remaining chunk to domains
             if Chunk:
                 domains += Chunk
-
         print("Start Encoding.")
-        #t = time.time()
-        #def char_to_binary(char):
-        #    return format(ord(char), '08b')
-        
-        # Create the binary representation, keeping '\n' as text
-        #binary_representation = ''.join(
-        #    char_to_binary(char) if char != '\n' else '\\n'
-        #    for char in domains
-        #)
         open(f"BlockList/{type}.txt", "wb").write(domains.encode("utf-8"))
         self.Lists.append(f"BlockList/{type}.txt")
         return

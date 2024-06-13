@@ -13,15 +13,17 @@ class DNSClient():
         self.Kill = True
         self.reader = None
         self.AllClients = []
-        self.Key = 0
+        self.Key = 1
 
     async def Reader(self):
         #start event with flag so you can end when you want. "Remember When you set flag to False. it will stop read until next Message."
         await self.Socket.Connect((self.ip, self.port))
+        print("Read")
         while self.Kill:
             try:
                 data = await self.Socket.Recv()#read each data from the server. and put in the msg list.
                 if data != 0:
+                    print(data)
                     _key = data[:2]
                     self.msg[_key] = data
                     self.Wait_list[_key].set() #Part of the event wait and key system.

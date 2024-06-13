@@ -2,4 +2,5 @@ DNS.log
 BlockList/
 __pycache__/
 D.py
-Test.py
+Test.
+.gitignore

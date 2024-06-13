@@ -121,11 +121,16 @@ async def main():
         Settings = json.loads(open(Settingfile, "r").read())
     except:
         Settings = {
-            "Memory": 1,
-            "Proxy": 1,
-            "Logs": "DNS.log",
-            "MemoryLogs": 43,
-            "DDOs": 1,
+        "Memory": 1,
+        "Proxy": 1,
+        "Logs": "DNS.log",
+        "MemoryLogs": 43,
+        "DDOs": 1,
+        "DNSQueriesBasedOnLocation": 1,
+        "blockAD": 1,
+        "BlockMalicious": 1,
+        "BlockSuspicious": 1,
+        "BlockAdvertising": 1
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     client = DNSClient(My_IP, 53)

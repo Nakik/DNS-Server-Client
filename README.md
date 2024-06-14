@@ -13,7 +13,6 @@ Welcome to the **Python DNS Server and Client** project! This repository provide
 ![DNS check](https://github.com/Nakik/DNS-Server-Client/blob/main/DNSCheck.png?raw=true)
 
 10.100.102.8 is my Local ip (bind to 0.0.0.0, so you can also access it with public IP :).
-## Usage
 
 ### DNS Server
 
@@ -42,6 +41,10 @@ BlockAdvertising On<br>
 Logs - Refers to the file. 0 means logging is off.<br>
 MemoryLogs - Refers to time. 0 means memory logging is off.<br>
 ### Example
+
+## To Install:
+`pip install -r requirements.txt`
+Need to download psutil and aioconsole python libraries.
 
 Below is a simple example demonstrating how to use the DNS client in an asyncio context:
 

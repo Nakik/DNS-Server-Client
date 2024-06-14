@@ -17,7 +17,10 @@ import asyncio
 import traceback
 import sys
 import json
-import psutil
+try:
+    import psutil
+except:
+    raise Exception("Please install psutil. pip install psutil")
 
 ##############################################
 #Importing the classes from the files.

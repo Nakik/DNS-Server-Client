@@ -10,7 +10,7 @@ class DNSMemoryManager():
         self.memory = memory
     async def Loop(self):
         while True:
-            await asyncio.sleep(30)
+            await asyncio.sleep(30) #Check every 30 seconds.
             for key, value in self.memory.memory.copy().items():
                 if (datetime.datetime.now() - datetime.datetime.strptime(value["last_update"], "%Y-%m-%d %H:%M:%S")).seconds > value["TTL"]:
                     self.memory.memory.pop(key)

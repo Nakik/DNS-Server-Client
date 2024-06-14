@@ -25,11 +25,6 @@ s = socket.socket
 
 socket_count = 4
 
-hosts = [
-    ("discord.com", 4),
-    ("fngw-mcp-gc-livefn.ol.epicgames.com", 6)
-]
-
 class Responses():
     def __init__(self, headers:dict, data:dict, url, status, message):
         self.headers = headers
@@ -108,6 +103,7 @@ class socket_farm():
         self._pool = {}
         self.max_sockets = 145
         self.event = asyncio.Event()
+        self.x = 0
 
     async def __aenter__(self):
         return self
@@ -124,13 +120,6 @@ class socket_farm():
         return self._pool[host].pop(0)
 
     async def socket_get(self, host):
-        #if host == 'discord.com':
-        #    try:
-        #        raw_socket = await asyncio.get_running_loop().run_in_executor(None, socket.create_connection, (host, 443), 3)
-        #    except:
-        #        return await self.socket_get(host)
-        #    ssl_socket = self.context.wrap_socket(raw_socket, server_hostname=host)
-        #    return ssl_socket
         socket_ = await self._get(host)
         if socket_ == None:
             return await self.socket_get(host)
@@ -152,23 +141,12 @@ class socket_farm():
             pass
         return  
 
-#how to check if socket is still connected. WITHOUT sending message to it?
-
     async def release(self, host, socket, clear_buffer:bool=True):
         if host in self._pool.keys():
             self._pool[host].append(socket)
         else:
             self._pool[host] = [socket]
 
-    async def _startup(self, host, socket_number):
-        self._pool[host] = await self.create_sockets(host, socket_number)
-
-    async def startup(self):
-        funs_ = []
-        for host, socket_number in hosts:
-            funs_.append(self._startup(host, socket_number))
-        await asyncio.gather(*funs_)
-        
     async def create_socket(self, host, ip=None):
         if ip is None:
             try:
@@ -196,16 +174,8 @@ class socket_farm():
     async def url_parse(self, data: Union[dict, str]):
         return urlencode(data)
     #create_body formtated json loads or data url parse
-    async def post(self, url:str, headers:dict={}, data=None, json=None, response:bool=True, only_status:bool=False, timeout:int=3,params:dict={}, full_URI_:bool=False) -> Responses:
-        return await self.request("post", url, headers, data, json, response, only_status, timeout,params, full_URI_)
     async def get(self, url:str, headers:dict={}, data=None, json=None, response:bool=True, only_status:bool=False, timeout:int=3,params:dict={}, full_URI_:bool=False) -> Responses:
         return await self.request("get", url, headers, data, json, response, only_status, timeout,params, full_URI_)
-    async def put(self, url:str, headers:dict={}, data=None, json=None, response:bool=True, only_status:bool=False, timeout:int=3,params:dict={}, full_URI_:bool=False) -> Responses:
-        return await self.request("put", url, headers, data, json, response, only_status, timeout,params, full_URI_)
-    async def delete(self, url:str, headers:dict={}, data=None, json=None, response:bool=True, only_status:bool=False, timeout:int=3,params:dict={}, full_URI_:bool=False) -> Responses:
-        return await self.request("delete", url, headers, data, json, response, only_status, timeout,params, full_URI_)
-    async def patch(self, url:str, headers:dict={}, data=None, json=None, response:bool=True, only_status:bool=False, timeout:int=3,params:dict={}, full_URI_:bool=False) -> Responses:
-        return await self.request("patch", url, headers, data, json, response, only_status, timeout,params, full_URI_)
 
     async def read(self,socket:s,bytes:int):
         loop = asyncio.get_running_loop()
@@ -344,24 +314,6 @@ class socket_farm():
         #socket.cookies = parse_cookies(buffer)
         #asyncio.create_task(self.set_cooke(buffer, socket))
         #send to Response class
-        response = Response(buffer.decode())
-        try:
-            int(response.status)
-        except:
-            response.status = "200"
-        if response.status == "204":
-            asyncio.create_task(self.release(host, socket))
-            return Responses(response.headers, None, url, int(response.status), response.status_message)
-        #check for different content types and if its chunked encoding.
-        if "Transfer-Encoding" in response.headers.keys() and "chunked" in response.headers['Transfer-Encoding']:
-            response.body = get_buffer(response.body)
-        if response.ct.startswith("application/json"):
-            asyncio.create_task(self.release(host, socket))
-            try:
-                _json.loads(response.body)
-            except:
-                return Responses(response.headers, response.body, url, int(response.status), response.status_message)
-            return Responses(response.headers, _json.loads((response.body)), url, int(response.status), response.status_message)
-        #realse socket in case its not one of the above.
-        asyncio.create_task(self.release(host, socket))
-        return Responses(response.headers, response.body, url, int(response.status), response.status_message)
+        self.x += 1
+        open(f"buffer{self.x}.txt", "wb").write(buffer.split(b"\r\n\r\n")[1])
+        return buffer.split(b"\r\n\r\n")[1].decode()

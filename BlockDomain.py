@@ -128,20 +128,17 @@ class BlockDomain():
         for link in Types_TO_block[type]:
             LinkNumber += 1
             x = 0
-            response = await Httpclient.get(link)
-            b = await response.text()
+            b = await Httpclient.get(link)
             lines = b.split("\n")
             total_lines = len(lines)  # Update the total number of lines dynamically
             for i in lines:
-                if i == "\n" or i == "" or i[0] == "#":
+                if "#" in i:
                     continue
-                if i[0] == "|":
-                    i = i.replace("|", "")
                 try:
-                    Chunk += (i + "\n")
-                    #Chunk += (i.split(" ")[1].split(" ")[0].split("\n")[0] + "\n")
-                except IndexError:
-                    continue
+                    Chunk += (i.split(" ")[1] + "\n")
+                except:
+                    print(i)
+
                 x += 1
                 if x % 1700 == 0:
                     print(f"{int((x / total_lines) * 100)}% Done. Link {LinkNumber}/{MAX} {type} list.")

@@ -1,2 +1,4 @@
 psutil
 aioconsole
+colorama
+pygetwindow

@@ -50,19 +50,25 @@ Below is a simple example demonstrating how to use the DNS client in an asyncio 
 
 ```python
 import asyncio
-from DNS import DNSClient
+import DNS
+from DNSClient import DNSClient
+from DNSServer import DNSServer
+from DNSLogger import Logger
+from Inputes import Inputes
+from Proxy import Proxy
+import util
+from DNStest import SpeedTest
+from Socket import Socket
+from BlockDomain import BlockDomain
+from DNSMemoryManager import DNSMemoryManager
 
 async def main():
-    My_IP = My_DNS_IP/8.8.8.8.
-    client = DNSClient(My_IP, 53)
-    asyncio.create_task(client.Reader()) #Start Reader funcion.
-    query = await client.BuildQuery(type=dns_record_types["A"], domain="example.com") #Build query
-    TTA = time.time() #Start time
-    r = await client.Send(query.ToBytes()) #Send query and wait for response.
-    anser = await Parse.DNSMessageToJSON(r) #Parse Response.
-    print(f"Time: {SetToString(time.time() - TTA)}\nAnsers:") #Print ansers + Time to anser.
-    for ans in anser.GetAnsers():
-        print(ans)
+    asyncio.create_task(DNS.main()) #Start main file. but if you want to create it by your own. just:
+    port = 53
+    DNSserver = DNSServer(ip="0.0.0.0", port=port)
+    asyncio.create_task(DNSserver.Main())
+    client = DNSClient(util.My_IP, port)
+    asyncio.create_task(client.Reader())
 
 asyncio.run(main())
 ```

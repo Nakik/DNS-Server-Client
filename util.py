@@ -592,7 +592,7 @@ class Events():
         if self._flag:
             return
         
-        loop = self.get_event_loop()
+        loop = asyncio.get_running_loop()
         fut = loop.create_future()
         self._waiters.append(fut)
         await fut
@@ -602,9 +602,6 @@ class Events():
         while self._waiters:
             waiter = self._waiters.popleft()
             waiter.set_result(None)
-
-    def get_event_loop(self):
-        return asyncio.get_running_loop()
 
 memory = {
     "Domain":

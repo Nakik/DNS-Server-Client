@@ -1,11 +1,9 @@
 import asyncio
-import aiohttp #To download from links
+from NetworkClassHTTP import socket_farm #To download from links
 import os #For the folder making.
-import time
 import mmap
 from DNSClient import DNSClient
 from util import *
-import aiodns
 
 def convert_list_to_binary(filename):
     try:
@@ -126,31 +124,32 @@ class BlockDomain():
         LinkNumber = 0
         MAX = len(Types_TO_block[type])
         Resolver = resolver(self.client)
-
-        connector = aiohttp.TCPConnector(resolver=Resolver)
-        async with aiohttp.ClientSession(connector=connector) as session:
-            for link in Types_TO_block[type]:
-                LinkNumber += 1
-                x = 0
-                async with session.get(link) as response:
-                    b = await response.text()
-                    lines = b.split("\n")
-                    total_lines = len(lines)  # Update the total number of lines dynamically
-                    for i in lines:
-                        if i == "\n" or i == "" or i[0] == "#":
-                            continue
-                        try:
-                            Chunk += (i.split(" ")[1].split(" ")[0].split("\n")[0] + "\n")
-                        except IndexError:
-                            continue
-                        x += 1
-                        if x % 1700 == 0:
-                            print(f"{int((x / total_lines) * 100)}% Done. Link {LinkNumber}/{MAX} {type} list.")
-                            domains += Chunk
-                            Chunk = ""
-            # Add remaining chunk to domains
-            if Chunk:
-                domains += Chunk
+        Httpclient = socket_farm(self.client)
+        for link in Types_TO_block[type]:
+            LinkNumber += 1
+            x = 0
+            response = await Httpclient.get(link)
+            b = await response.text()
+            lines = b.split("\n")
+            total_lines = len(lines)  # Update the total number of lines dynamically
+            for i in lines:
+                if i == "\n" or i == "" or i[0] == "#":
+                    continue
+                if i[0] == "|":
+                    i = i.replace("|", "")
+                try:
+                    Chunk += (i + "\n")
+                    #Chunk += (i.split(" ")[1].split(" ")[0].split("\n")[0] + "\n")
+                except IndexError:
+                    continue
+                x += 1
+                if x % 1700 == 0:
+                    print(f"{int((x / total_lines) * 100)}% Done. Link {LinkNumber}/{MAX} {type} list.")
+                    domains += Chunk
+                    Chunk = ""
+        # Add remaining chunk to domains
+        if Chunk:
+            domains += Chunk
         print("Start Encoding.")
         open(f"BlockList/{type}.txt", "wb").write(domains.encode("utf-8"))
         self.Lists.append(f"BlockList/{type}.txt")

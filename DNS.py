@@ -17,7 +17,6 @@ import asyncio
 import traceback
 import sys
 import json
-import time
 import psutil
 
 ##############################################
@@ -32,6 +31,7 @@ from util import *
 from DNStest import SpeedTest
 from Socket import Socket
 from BlockDomain import BlockDomain
+from DNSMemoryManager import DNSMemoryManager
 
 #This is for Proxy.
 try:
@@ -140,10 +140,11 @@ async def main():
     await asyncio.sleep(4)
     try:
         DDOS = False
-        memory = False
+        Memory = False
         Ip2Location = None
         if Settings["Memory"] == 1:
-            memory = True
+            Memory = True
+            asyncio.create_task(DNSMemoryManager(memory).Loop())
         proxy = None
         if Settings["Proxy"] == 1:
             proxy = Proxy(FileToSave="Filters.txt")
@@ -172,12 +173,11 @@ async def main():
             Block_list.append("Advertising")
         Blocker = BlockDomain(Block_list, client=client)
         DNSserver.logger = logger
-        DNSserver.Memory = memory
+        DNSserver.Memory = Memory
         DNSserver.proxy = proxy
         DNSserver.DDOS = DDOS
         DNSserver.DBipLocation = Ip2Location
         DNSserver.BlockDomain = Blocker
-        
         print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
     except:
         print(traceback.format_exc())

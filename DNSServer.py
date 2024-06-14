@@ -1,7 +1,5 @@
 import asyncio
 import socket
-import struct
-import random
 import time
 from util import *
 from util import memory

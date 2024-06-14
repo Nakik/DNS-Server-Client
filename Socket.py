@@ -26,11 +26,7 @@ class Socket():
         except:
             return 0
     async def Bind(self, addr: type):
-        try:
-            await self.Run(self.s.bind, addr)
-            return 1
-        except:
-            return 0
+        await self.Run(self.s.bind, addr)
     async def Close(self):
         try:
             await self.Run(self.s.close)

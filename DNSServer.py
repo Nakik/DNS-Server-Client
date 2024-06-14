@@ -81,7 +81,15 @@ class  DNSServer():
             self.DDOSlist = {}
 
     async def Main(self):
-        await self.server_socket.Bind((self.ip, self.port))
+        try:
+            await self.server_socket.Bind((self.ip, self.port))
+        except socket.error as e:
+            if e.errno == 10048:  # Address already in use
+                print(f"Port {self.port} is already in use.")
+                print("To use the Server please close the other program that use the port or change the port in the settings file.")
+            else:
+                raise
+            
         while True:
             try:
                 data, addr = await self.server_socket.RecvFrom()

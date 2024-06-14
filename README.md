@@ -26,6 +26,7 @@ The DNS client component can be used to send DNS queries and process the respons
 ### Settings
 The Settings is json file `Settings.json`
 Default settings are:
+Port 53<br>
 Memory On<br>
 Proxy On<br>
 Logs File = DNS.log<br>

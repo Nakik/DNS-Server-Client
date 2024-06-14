@@ -3,6 +3,7 @@ try:
 except:
     raise ImportError #Skill issue. but this libraries are default for python so -_--_-.
 
+
 class RegisteryEditor():
     def __init__(self):
         self.module = winreg

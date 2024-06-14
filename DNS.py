@@ -104,9 +104,9 @@ async def PrintInfo(Time:int=3, logger: Logger=None):
         except:
             print(traceback.format_exc())
 
-async def TestAndPrint(logger: Logger):
+async def TestAndPrint(logger: Logger, addr: tuple):
     try:
-        cached_time, dotcom_time, uncached_time = await SpeedTest(My_IP, 53)
+        cached_time, dotcom_time, uncached_time = await SpeedTest(addr[0], addr[1])
         await logger.Print("Speed Test:")
         await logger.Print(f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
         await logger.Print(f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
@@ -132,9 +132,10 @@ async def main():
         "BlockAdvertising": 1
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
-    DNSserver = DNSServer()
+    port = Settings["Port"]
+    DNSserver = DNSServer(ip="0.0.0.0", port=port)
     asyncio.create_task(DNSserver.Main())
-    client = DNSClient(My_IP, 53)
+    client = DNSClient(My_IP, port)
     asyncio.create_task(client.Reader())
     await asyncio.sleep(4)
     try:

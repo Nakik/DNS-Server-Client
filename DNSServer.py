@@ -132,7 +132,11 @@ class  DNSServer():
             if data == 0 or not 0 == (data[:12][2] >> 7) & 1:
                 return
             requests = Parse.DNSMessageToJSON(data)#DNSMessage
-            ADDRString, Process = GetAddrString(addr)
+            try:
+                ADDRString, Process = GetAddrString(addr)
+            except:
+                ADDRString = f"{addr[0]}:{addr[1]}"
+                Process = None
             #ADDRString = For logger.
             #Process = This to using To proxy all process DNS to same IP.
             if self.logger:

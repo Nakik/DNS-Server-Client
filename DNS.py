@@ -37,18 +37,18 @@ from BlockDomain import BlockDomain
 from DNSMemoryManager import DNSMemoryManager
 
 #This is for Proxy.
-try:
-    if True:
-        import ctypes
-        ThisFodler = os.path.dirname(__file__)
-        file = os.path.join(ThisFodler, "DNSProxyManagerWindow.py")
-        if os.path.exists(file):
-            if ctypes.windll.shell32.IsUserAnAdmin() == 0:
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, file, None, 2)
-            else:
-                import DNSProxyManagerWindow
-except:
-    print("Cant set DNS proxy.")
+#try:
+#    if True:
+#        import ctypes
+#        ThisFodler = os.path.dirname(__file__)
+#        file = os.path.join(ThisFodler, "DNSProxyManagerWindow.py")
+#        if os.path.exists(file):
+#            if ctypes.windll.shell32.IsUserAnAdmin() == 0:
+#                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, file, None, 2)
+#            else:
+#                import DNSProxyManagerWindow
+#except:
+#    print("Cant set DNS proxy.")
 
 try:
     import colorama
@@ -118,6 +118,24 @@ async def TestAndPrint(logger: Logger, addr: tuple):
         print(traceback.format_exc())
 
 async def main():
+    global My_IP
+    print(My_IP, 'ASD')
+    if isinstance(My_IP, list):
+        #Ask user on what adapter/ip to start app.
+        print("What IP(adapter) To use?")
+        x = 0
+        lis = {}
+        for ip in My_IP:
+            lis[x] = ip
+            print(f"{x}. {ip}")
+            x += 1
+        while True:
+            try:
+                My_IP = lis[int(await ainput("Peak a IP(number):"))]
+                break
+            except:
+                print("Please enter a valid number from the list.")
+    print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
     Settingfile = "Settings.json"
     try:
         Settings = json.loads(open(Settingfile, "r").read())
@@ -136,7 +154,7 @@ async def main():
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     port = Settings["Port"]
-    DNSserver = DNSServer(ip="0.0.0.0", port=port)
+    DNSserver = DNSServer(ip=My_IP, port=port)
     asyncio.create_task(DNSserver.Main())
     client = DNSClient(My_IP, port)
     asyncio.create_task(client.Reader())
@@ -181,7 +199,6 @@ async def main():
         DNSserver.DDOS = DDOS
         DNSserver.DBipLocation = Ip2Location
         DNSserver.BlockDomain = Blocker
-        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
     except:
         print(traceback.format_exc())
     try:
@@ -226,7 +243,7 @@ async def main():
     #                await asyncio.sleep(600)
     #        except:
     #            print(traceback.format_exc())
-    await asyncio.sleep(10000)
+    await asyncio.sleep(10000000000)
 
 if __name__ == "__main__":
     asyncio.run(main())

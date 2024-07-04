@@ -1,13 +1,13 @@
 {
     "Port": 53,
-    "Memory": 1,
+    "Memory": 0,
     "Proxy": 1,
     "Logs": "DNS.log",
     "MemoryLogs": 43,
     "DDOs": 1,
     "DNSQueriesBasedOnLocation": 1,
     "blockAD": 1,
-    "BlockMalicious": 1,
-    "BlockSuspicious": 1,
+    "BlockMalicious": 0,
+    "BlockSuspicious": 0,
     "BlockAdvertising": 1
 }

@@ -87,7 +87,6 @@ class  DNSServer():
                 print("To use the Server please close the other program that use the port or change the port in the settings file.")
             else:
                 raise
-            
         while True:
             try:
                 data, addr = await self.server_socket.RecvFrom()
@@ -109,7 +108,6 @@ class  DNSServer():
                         continue
                     if self.DDOSlist[addr[0]][0] > 100:
                         self.DDOSlist[addr[0]] = [0, time.time()]
-                    print(self.DDOSlist[addr[0]][0])
                     self.DDOSlist[addr[0]][0] += 1
                 else:
                     self.DDOSlist[addr[0]] = [1, time.time()]
@@ -139,21 +137,9 @@ class  DNSServer():
                 Process = None
             #ADDRString = For logger.
             #Process = This to using To proxy all process DNS to same IP.
+            Time = time.time()
             if self.logger:
                 await self.logger.Log(requests, ADDRString)
-                Time = time.time()
-            #This code is to check the block domain.
-            #IF its not its not block domain. it will take around 0.001 sec to check the domain.(1ms)
-            #its 1ms on my computer: intel-I7-9700 | Memory 2400Mhz.
-            #If the domain is Inside the List it can take even less. depends on the location of the domain in the list.(Start will be instant.)
-            domain = requests.GetQuestions()[0].domain
-            if self.BlockDomain:
-                if self.BlockDomain.CheckDomain(domain):
-                    question = requests.GetQuestions()[0]
-                    data = ExampleResponses[question.type]
-                    r = [(question.domain, question.type, question.Class, 120, data)]
-                    await self.server_socket.Send(BuildAnser(requests, r, 1).ToBytes(), addr)
-                    return
             if self.proxy and requests.NotFine is False:
                 r = self.proxy.CheckProxy(requests)
                 if r:
@@ -171,6 +157,26 @@ class  DNSServer():
                         ADDRString += " - Memory Anser"
                         await self.logger.Log(anser, ADDRString, Time=time.time()-Time)
                     await self.server_socket.Send(anser.ToBytes(), addr)#send the response to the client.
+                    return
+            #This code is to check the block domain.
+            #IF its not its not block domain. it will take around 0.001 sec to check the domain.(1ms)
+            #its 1ms on my computer: intel-I7-9700 | Memory 2400Mhz.
+            #If the domain is Inside the List it can take even less. depends on the location of the domain in the list.(Start will be instant.)
+            domain = requests.GetQuestions()[0].domain
+            if self.BlockDomain:
+                if self.BlockDomain.CheckDomain(domain):
+                    #This part you can ignore and delete. its just for the block domain.
+                    #If the domain is in the block list. it will return the data from the ExampleResponses.
+                    #But not always you need to return the same data. you can return random data. or just return the same data.
+                    question = requests.GetQuestions()[0]
+                    data = ExampleResponses[question.type] #Get not working data.
+                    r = [(question.domain, question.type, question.Class, 120, data)] #Build anser
+                    try:
+                        await self.server_socket.Send(BuildAnser(requests, r, 1).ToBytes(), addr) #Build anser and return it.
+                    except KeyError:
+                        return #not return anything.
+                    except:
+                        print(traceback.format_exc())
                     return
             if self.DBipLocation:
                 if addr[0] in self.IpsMemory:

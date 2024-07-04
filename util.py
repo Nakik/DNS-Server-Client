@@ -17,16 +17,28 @@ default_DNS_server = "8.8.8.8"
 PORT = 53
 OFFLINE = False
 
+hostname = socket.gethostname()
+local_ips = socket.gethostbyname_ex(hostname)[2]
+
 def get_local_ip():
     if OFFLINE:
         return "127.0.0.1"
-    try:
-        s = socket.create_connection(("8.8.8.8", 53), )
-        local_ip = s.getsockname()[0]
-        return local_ip
-    except Exception as e:
+    local_ipss = []
+    for adapter_ip in local_ips:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.bind((adapter_ip, 0))  # 0 means the OS will choose a random available port
+        try:
+            s.connect(("8.8.8.8", 53))
+            local_ip = s.getsockname()[0] #get Local IP.
+            local_ipss.append(local_ip) #Add to list.
+        except Exception as e:
+            continue
+    if local_ipss == []:
         raise Exception("No Network Connection.")
-
+    if len(local_ipss) == 1:
+        return local_ipss[0]
+    else: 
+        return local_ipss
 #This app Print funcion. its 100% useless. but Faster if you print all the things.
 Console = sys.stdout
 def Print(*k):
@@ -37,7 +49,7 @@ def Print(*k):
     Console.write(Text + "\n")
 
 print = Print
-
+global My_IP
 My_IP = get_local_ip()
 
 DNSServer_List = [

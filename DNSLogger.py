@@ -20,8 +20,8 @@ class Logger():
         #Show just key, question domain and type. and anser number.
         if message.QR == 1:
             if message._questions == []:
-                return f"Anser: {message.id} Questions Number: 0 - Ansers Number: {message.AN}"
-            return f"Anser: {message.id} Questions Number: {message.QN}, ({message._questions[0][0]} {message._questions[0][1]}) - Ansers Number: {message.AN}"
+                return f"Anser: {message.id} Questions Number: 0 - Ansers Number: {message.AN} Anser Values [{[f"{i[0]} : {i[4]}" for i in message._ansers]}]"
+            return f"Anser: {message.id} Questions Number: {message.QN}, ({message._questions[0][0]} {message._questions[0][1]}) - Ansers Number: {message.AN} Anser Values [{[f"{i[0]} : {i[4]}" for i in message._ansers]}]"
         else:
             if message._questions == []:
                 return f"Question: {message.id} Questions Number: 0 - Ansers Number: {message.AN}"

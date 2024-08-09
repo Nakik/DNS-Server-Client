@@ -1,12 +1,13 @@
 import asyncio, socket
-
+from ssl import SSLSocket
+from typing import Union, Optional
 import contextvars, functools #To run the socket funcion in Asyncio.
 #Create Socket object.
 #its like(exactly) the normal socket just Asyncio.
 #Normal asyncio socket funcions to slow.
 
 class Socket():
-    def __init__(self, Socket: socket.socket):
+    def __init__(self, Socket: Union[socket.socket, SSLSocket]):
         self.s = Socket
         self.s.settimeout(0.4) #I dont know why to put this. but its making the code works.-_-
         self.loop = asyncio.get_event_loop()
@@ -14,7 +15,14 @@ class Socket():
     async def Run(self, fun, *args):
         ctx = contextvars.copy_context()
         return await self.loop.run_in_executor(None, functools.partial(ctx.run, fun, *args))
-
+    
+    async def do_handshake(self):
+        try:
+            await self.Run(self.s.do_handshake)
+            return 1
+        except:
+            return 0
+        
     async def Send(self, Data: bytes, addr: tuple=None):
         try:
             if isinstance(Data, str):
@@ -57,5 +65,4 @@ class Socket():
         try:
             return await self.Run(self.s.accept)
         except:
-            import traceback
             return 0, ""

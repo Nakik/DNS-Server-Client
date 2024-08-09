@@ -119,7 +119,6 @@ async def TestAndPrint(logger: Logger, addr: tuple):
 
 async def main():
     global My_IP
-    print(My_IP, 'ASD')
     if isinstance(My_IP, list):
         #Ask user on what adapter/ip to start app.
         print("What IP(adapter) To use?")
@@ -156,7 +155,7 @@ async def main():
     port = Settings["Port"]
     DNSserver = DNSServer(ip=My_IP, port=port)
     asyncio.create_task(DNSserver.Main())
-    client = DNSClient(My_IP, port)
+    client = DNSClient("23.167.232.7", port)
     asyncio.create_task(client.Reader())
     await asyncio.sleep(4)
     try:
@@ -227,6 +226,7 @@ async def main():
         client.AllClients.append(Client) #Add to the client list
     try:
         ansers = await client.GlobalDNS("epicgames.com")
+        print(ansers)
     except:
         print(traceback.format_exc())
     #while True:

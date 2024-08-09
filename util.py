@@ -247,9 +247,6 @@ class Anser():
         self.type = type
         self.Class = Class
         self.ttl = ttl
-
-        
-        
         self.data = data
     def __str__(self) -> str:
         return f"Anser: {self.domain} {self.type} {self.Class} {self.ttl} {self.data}"
@@ -498,7 +495,6 @@ def unparse_type_txt_rdata(data):
 
 def unparse_type_aaaa_rdata(data):
     # Unparse data for Type AAAA (IPv6 address)
-    print(data)
     return socket.inet_pton(socket.AF_INET6, data)
 
 def unparse_type_srv_rdata(data):

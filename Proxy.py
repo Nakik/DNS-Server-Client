@@ -74,7 +74,7 @@ class Proxy():
         self.options = []
         self.writer = open(FileToSave, "a")
         self.reader = open(FileToSave, "r")
-        for line in self.reader.readlines():
+        for line in self.reader.read().split("\n"):
             try:
                 cond, code = FilterToCode(line)
                 self.options.append((cond, code))

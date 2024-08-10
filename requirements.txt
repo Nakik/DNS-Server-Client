@@ -2,3 +2,4 @@ psutil
 aioconsole
 colorama
 pygetwindow
+watchdog

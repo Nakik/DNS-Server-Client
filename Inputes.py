@@ -40,18 +40,24 @@ class Inputes():
             "memory": self.Memory,
             "logs": self.Logs
         }
+        self.ARGS = {
+            "set": ["type", "server"],
+            "proxy": ["on", "off", "manager"],
+            "memory": ["on", "off"],
+            "logs": ["on", "off"],
+        }
     
     def UpdateSettings(self, key, value):
         self.Settings[key] = value
         with open(self.Settingfile, "w") as f:
             f.write(json.dumps(self.Settings))
 
-    def Logs(self, args):
+    async def Logs(self, args):
         #if Path is None. ask user for path to save the logs.
         if self.Server.logger is None:
             #ask user for path to save the logs.
-            print("Enter the path to save the logs (Leave empty to save to use):")
-            path = ainput()
+            print("Enter the path to save the logs (Leave empty to save default):")
+            path = await ainput()
             self.UpdateSettings("Logs", path)
             self.Server.logger = Logger(path)
         if args == "on":
@@ -63,7 +69,7 @@ class Inputes():
             print("Logs are disabled.")
         else:
             print("\033[31m" + "Invalid argument. on/off" + "\033[0m")
-    def Memory(self, args):
+    async def Memory(self, args):
         if args == "on":
             self.UpdateSettings("Memory", 1)
             self.Server.Memory = True
@@ -75,8 +81,72 @@ class Inputes():
             print("Memory is disabled.")
         else:
             print("\033[31m" + "Invalid argument. on/off" + "\033[0m")
-    def Proxy(self, args):
-        if args == "on":
+    async def Proxy(self, args):
+        if args == "manager":
+            print("Welcome to the Proxy options manager.")
+            print("Here you can add, remove, and see the proxies rules/Filters.")
+            print("Commands:")
+            print("\033[33m" + "Add -> Add a new Proxy Rule/Filters." + "\033[0m")
+            print("\033[32m" + "Remove (number from List) -> Remove a Proxy Rule/Filters." + "\033[0m")
+            print("\033[34m" + "List -> List all the Proxy Rules/Filters." + "\033[0m")
+            print("Exit -> Exit the Proxy options manager.")
+            while True:
+                command = await ainput()
+                if command == "exit":
+                    print("Exiting the Proxy options manager.")
+                    break
+                if command == "add":
+                    print("Enter the domain/value:")
+                    domain = await ainput()
+                    print("Enter the type(IP->1/A):")
+                    type = await ainput()
+                    print("Enter the Target(Ip/Domain depend on value.):")
+                    value = await ainput()
+                    open("Filters.txt", "a").write(f'\nQ.domain == "{domain.strip()}" & Q.type == {type.strip()} -> {value.strip()}')
+                    print("Rule/Filter Added.")
+                    print("Rules/Filters:")
+                    X = 1
+                    for proxy in self.Server.proxy.options:
+                        option = ""
+                        for o in proxy[0]:
+                            option += o + " & "
+                        option = option[:-3]
+                        print(f"{X}. {option} -> {proxy[1]}")
+                        X += 1
+                elif command.startswith("remove"):
+                    try:
+                        number = int(command.split(" ")[1].strip())
+                    except:
+                        print("\033[31m" + "Invalid number." + "\033[0m")
+                        continue
+                    if number > len(self.Server.proxy.options):
+                        print("\033[31m" + "Invalid number." + "\033[0m")
+                        continue
+                    self.Server.proxy.options.pop(number-1)
+                    await self.Server.proxy.UpdateFile()
+                    print("Rule/Filter removed.")
+                    print("Rules/Filters:")
+                    X = 1
+                    for proxy in self.Server.proxy.options:
+                        option = ""
+                        for o in proxy[0]:
+                            option += o + " & "
+                        option = option[:-3]
+                        print(f"{X}. {option} -> {proxy[1]}")
+                        X += 1
+                elif command == "list":
+                    print("Proxies:")
+                    X = 1
+                    for proxy in self.Server.proxy.options:
+                        option = ""
+                        for o in proxy[0]:
+                            option += o + " & "
+                        option = option[:-3]
+                        print(f"{X}. {option} -> {proxy[1]}")
+                        X += 1
+                else:
+                    print("\033[31m" + "Command not found." + "\033[0m")
+        elif args == "on":
             self.Server.proxy = Proxy()
             self.UpdateSettings("Proxy", 1)
             print("Proxy is enabled.")
@@ -89,7 +159,7 @@ class Inputes():
     def Speed(self, args):
         #Not yet implemented.
         pass
-    def Set(self, args):
+    async def Set(self, args):
         if args.split(" ")[0] == "server":
             Server_ip = args.split(" ")[1]
             Port = 53
@@ -170,7 +240,6 @@ class Inputes():
                 await self.Client.Close()
                 await self.Server.Close()
                 os._exit(1)
-
             if command in self._Shorts.keys():
                 command = self._Shorts[command]
             elif command in self.Global_Commands:
@@ -207,21 +276,25 @@ class Inputes():
                 if not args:
                     #Need to put args on commands
                     print("\033[31m" + "Command need argument." + "\033[0m")
+                    Args = ", ".join(self.ARGS[command])
+                    print("Args:", Args)
                     continue
                 if not self.Client:
                     if (await self.ClientComm()) == False:
                         continue
-                self.SubCommandsC[command](args)
+                await self.SubCommandsC[command](args)
                 continue
             elif command in self.SubCommandsS.keys():
                 if not args:
                     #Need to put args on commands
-                    print("\033[31m" + "Command need argument." + "\033[0m")
+                    print("\033[33m" + "Command need argument." + "\033[0m")
+                    Args = ", ".join(self.ARGS[command])
+                    print("Args:", Args)
                     continue
                 if not self.Server:
                     if (await self.ServerComm()) == False:
                         continue
-                self.SubCommandsS[command](args)
+                await self.SubCommandsS[command](args)
                 continue
             else:
                 print("\033[31m" + "Command not found." + "\033[0m")

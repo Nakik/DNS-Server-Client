@@ -20,7 +20,7 @@ import json
 try:
     import psutil
 except:
-    raise Exception("Please install psutil. pip install psutil")
+    raise Exception("Please install psutil:\npip install psutil")
 
 ##############################################
 #Importing the classes from the files.
@@ -36,7 +36,7 @@ from Socket import Socket
 from BlockDomain import BlockDomain
 from DNSMemoryManager import DNSMemoryManager
 
-#This is for Proxy.
+#This is for Proxy.``
 #try:
 #    if True:
 #        import ctypes
@@ -118,23 +118,6 @@ async def TestAndPrint(logger: Logger, addr: tuple):
         print(traceback.format_exc())
 
 async def main():
-    global My_IP
-    if isinstance(My_IP, list):
-        #Ask user on what adapter/ip to start app.
-        print("What IP(adapter) To use?")
-        x = 0
-        lis = {}
-        for ip in My_IP:
-            lis[x] = ip
-            print(f"{x}. {ip}")
-            x += 1
-        while True:
-            try:
-                My_IP = lis[int(await ainput("Peak a IP(number):"))]
-                break
-            except:
-                print("Please enter a valid number from the list.")
-    print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{My_IP}" + "\033[0m") #My_IP from util.
     Settingfile = "Settings.json"
     try:
         Settings = json.loads(open(Settingfile, "r").read())
@@ -146,18 +129,22 @@ async def main():
         "MemoryLogs": 43,
         "DDOs": 1,
         "DNSQueriesBasedOnLocation": 1,
-        "blockAD": 1,
         "BlockMalicious": 1,
         "BlockSuspicious": 1,
-        "BlockAdvertising": 1
+        "BlockAdvertising": 1,
+        "Country": "IL",
         }
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
-    port = Settings["Port"]
-    DNSserver = DNSServer(ip=My_IP, port=port)
-    asyncio.create_task(DNSserver.Main())
+    DNSServers: list[DNSServer] = []
+    for ip in MyIps:
+        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{ip}" + "\033[0m")
+        port = Settings["Port"]
+        DNSserver = DNSServer(ip=ip, port=port)
+        asyncio.create_task(DNSserver.Main())
+        DNSServers.append(DNSserver)
     client = DNSClient("23.167.232.7", port)
-    asyncio.create_task(client.Reader())
-    await asyncio.sleep(4)
+    await client.Initialize()
+    PProxy = Proxy(FileToSave="Filters.txt")
     try:
         DDOS = False
         Memory = False
@@ -165,9 +152,9 @@ async def main():
         if Settings["Memory"] == 1:
             Memory = True
             asyncio.create_task(DNSMemoryManager(memory).Loop())
-        proxy = None
         if Settings["Proxy"] == 1:
-            proxy = Proxy(FileToSave="Filters.txt")
+            ProxyEnables = True
+        #    proxy = Proxy(FileToSave="Filters.txt")
         if Settings["Logs"] != 0:
             logger = Logger(file=Settings["Logs"])
         else:
@@ -192,43 +179,21 @@ async def main():
         if Settings["BlockAdvertising"] != 0:
             Block_list.append("Advertising")
         Blocker = BlockDomain(Block_list, client=client)
+    except:
+        print(traceback.format_exc())
+    for DNSserver in DNSServers:
         DNSserver.logger = logger
         DNSserver.Memory = Memory
-        DNSserver.proxy = proxy
+        if ProxyEnables:
+            DNSserver.proxy = PProxy
         DNSserver.DDOS = DDOS
         DNSserver.DBipLocation = Ip2Location
         DNSserver.BlockDomain = Blocker
-    except:
-        print(traceback.format_exc())
-    try:
-        s = Socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
-        r = await client.BuildQuery(domain="ipinfo.io")
-        anser = await client.Send(r.ToBytes())
-        anser = Parse.DNSMessageToJSON(anser)
-        await s.Connect((anser._ansers[0][4], 80))
-        await s.Send(b"GET / HTTP/1.1\r\nHost: ipinfo.io\r\n\r\n")
-        s.s.settimeout(4)
-        response = (await s.Recv()).decode()
-        await s.Close()
-        public_ip = json.loads(response.split("\r\n\r\n")[1])
-        MypublicIP = public_ip['ip']
-        if Ip2Location:
-            Country = Ip2Location.get_all(MypublicIP).country_short
-            DNSserver.MyLocation = Country
-    except:
-        print(traceback.format_exc())
-        pass
-    if True: #IDK!?
-        inputes = Inputes(Client=client, Server=DNSserver, Settings=Settings)
-        asyncio.create_task(inputes.MainLoop())
-    #ask user if he want to run the speed test.
-    for Client in DNSserver.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
-        client.AllClients.append(Client) #Add to the client list
-    try:
-        ansers = await client.GlobalDNS("epicgames.com")
-        print(ansers)
-    except:
-        print(traceback.format_exc())
+        DNSserver.MyLocation = Settings["Country"]
+        for Client in DNSserver.Socket.Sockets: #Install the servers i want Inside the Client. From the Server.
+            client.AllClients.append(Client) #Add to the client list
+    inputes = Inputes(proxy=PProxy, Client=client, DNSServers=DNSServers, Settings=Settings)
+    await inputes.MainLoop()
     #while True:
     #    query = await client.BuildQuery(domain="1.1.1.1", type=dns_record_types["PTR"])
     #    ansers = await client.Send(query.ToBytes())
@@ -243,7 +208,6 @@ async def main():
     #                await asyncio.sleep(600)
     #        except:
     #            print(traceback.format_exc())
-    await asyncio.sleep(10000000000)
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -15,30 +15,10 @@ import sys
 
 default_DNS_server = "8.8.8.8"
 PORT = 53
-OFFLINE = False
-
 hostname = socket.gethostname()
 local_ips = socket.gethostbyname_ex(hostname)[2]
+MyIps = local_ips
 
-def get_local_ip():
-    if OFFLINE:
-        return "127.0.0.1"
-    local_ipss = []
-    for adapter_ip in local_ips:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.bind((adapter_ip, 0))  # 0 means the OS will choose a random available port
-        try:
-            s.connect(("8.8.8.8", 53))
-            local_ip = s.getsockname()[0] #get Local IP.
-            local_ipss.append(local_ip) #Add to list.
-        except Exception as e:
-            continue
-    if local_ipss == []:
-        raise Exception("No Network Connection.")
-    if len(local_ipss) == 1:
-        return local_ipss[0]
-    else: 
-        return local_ipss
 #This app Print funcion. its 100% useless. but Faster if you print all the things.
 Console = sys.stdout
 def Print(*k):
@@ -49,8 +29,6 @@ def Print(*k):
     Console.write(Text + "\n")
 
 print = Print
-global My_IP
-My_IP = get_local_ip()
 
 DNSServer_List = [
 ("1.0.0.1",53 ),       # Cloudflare DNS
@@ -140,7 +118,7 @@ ExampleResponses = {
     25: "ff02::1",          # IPv6 multicast address
     26: "192.31.196.1",     # AS112 service
     27: "192.52.193.1",     # AMT service relay
-    28: "198.51.100.42",    # Reserved for documentation (TEST-NET-2, different address)
+    28: "0:0:0:0:0:0:0:1",    # Reserved for documentation (TEST-NET-2, different address)
     29: "203.0.113.42",     # Reserved for documentation (TEST-NET-3, different address)
     30: "192.0.2.42",       # Reserved for documentation (TEST-NET-1, different address)
     31: "240.0.0.2",        # Reserved for future use
@@ -680,7 +658,7 @@ def GetAddrString(addr: tuple):
     """
     If its local machine ip. it will get process name. if not return just ip:port.
     """
-    if addr[0] == My_IP:
+    if addr[0] in MyIps:
         PID, name = GetProcessName(addr[1])
         if PID != None and name != None:
             return f"LocalHost:{addr[1]} - Process: (Pid:{PID}, Name:{name})", name

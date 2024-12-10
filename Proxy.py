@@ -112,8 +112,6 @@ class Proxy():
                     cond, code = FilterToCode(line)
                     Options.append((cond, code))
                 except:
-                    import traceback
-                    print(traceback.format_exc(), line)
                     continue
         self.options = Options
 

@@ -10,10 +10,11 @@ from DNStest import SpeedTest
 import traceback
 
 class Inputes():
-    def __init__(self, Client: DNSClient = None, Server: DNSServer = None, Settings: dict=None):
+    def __init__(self, proxy: Proxy, Client: DNSClient = None, DNSServers: list[DNSServer] = None, Settings: dict=None):
         self.Client = Client
-        self.Server = Server
+        self.DNSServers = DNSServers
         self.type = ["A", "AAAA"]
+        self.proxy = proxy
         if not Settings:
             self.Settingfile = "Settings.json"
             self.Settings = json.loads(open(self.Settingfile, "r").read())
@@ -54,30 +55,35 @@ class Inputes():
 
     async def Logs(self, args):
         #if Path is None. ask user for path to save the logs.
-        if self.Server.logger is None:
-            #ask user for path to save the logs.
-            print("Enter the path to save the logs (Leave empty to save default):")
-            path = await ainput()
-            self.UpdateSettings("Logs", path)
-            self.Server.logger = Logger(path)
+        #if self.logger is None:
+        #    #ask user for path to save the logs.
+        #    print("Enter the path to save the logs (Leave empty to save default):")
+        #    path = await ainput()
+        #    self.UpdateSettings("Logs", path)
+        #    for server in self.DNSServers:
+        #        server.logger = Logger(path)
         if args == "on":
-            self.Server.logger._X = True
+            for server in self.DNSServers:
+                server.logger._X = True
             print("Logs are enabled.")
         elif args == "off":
             self.UpdateSettings("Logs", 0)
-            self.Server.logger._X = False
+            for server in self.DNSServers:
+                server.logger._X = False
             print("Logs are disabled.")
         else:
             print("\033[31m" + "Invalid argument. on/off" + "\033[0m")
     async def Memory(self, args):
         if args == "on":
             self.UpdateSettings("Memory", 1)
-            self.Server.Memory = True
+            for server in self.DNSServers:
+                server.Memory = True
             print("Memory is enabled.")
         elif args == "off":
             self.UpdateSettings("Memory", 0)
-            self.Server.Memory = False
-            self.Server.ClearMemory()
+            for server in self.DNSServers:
+                server.Memory = False
+                server.ClearMemory()
             print("Memory is disabled.")
         else:
             print("\033[31m" + "Invalid argument. on/off" + "\033[0m")
@@ -86,27 +92,33 @@ class Inputes():
             print("Welcome to the Proxy options manager.")
             print("Here you can add, remove, and see the proxies rules/Filters.")
             print("Commands:")
-            print("\033[33m" + "Add -> Add a new Proxy Rule/Filters." + "\033[0m")
-            print("\033[32m" + "Remove (number from List) -> Remove a Proxy Rule/Filters." + "\033[0m")
-            print("\033[34m" + "List -> List all the Proxy Rules/Filters." + "\033[0m")
-            print("Exit -> Exit the Proxy options manager.")
             while True:
+                print("\033[33m" + "Add -> Add a new Proxy Rule/Filters." + "\033[0m")
+                print("\033[32m" + "Remove (number from List) -> Remove a Proxy Rule/Filters." + "\033[0m")
+                print("\033[34m" + "List -> List all the Proxy Rules/Filters." + "\033[0m")
+                print("Exit -> Exit the Proxy options manager.")
                 command = await ainput()
                 if command == "exit":
                     print("Exiting the Proxy options manager.")
                     break
                 if command == "add":
-                    print("Enter the domain/value:")
+                    print("Enter the domain/value: (Type stop to stop)")
                     domain = await ainput()
-                    print("Enter the type(IP->1/A):")
+                    if value == "stop":
+                        continue
+                    print("Enter the type(IP->1/A): (Type stop to stop)")
                     type = await ainput()
-                    print("Enter the Target(Ip/Domain depend on value.):")
+                    if value == "stop":
+                        continue
+                    print("Enter the Target(Ip/Domain depend on value.): (Type stop to stop)")
                     value = await ainput()
+                    if value == "stop":
+                        continue
                     open("Filters.txt", "a").write(f'\nQ.domain == "{domain.strip()}" & Q.type == {type.strip()} -> {value.strip()}')
                     print("Rule/Filter Added.")
                     print("Rules/Filters:")
                     X = 1
-                    for proxy in self.Server.proxy.options:
+                    for proxy in self.proxy.options:
                         option = ""
                         for o in proxy[0]:
                             option += o + " & "
@@ -117,17 +129,17 @@ class Inputes():
                     try:
                         number = int(command.split(" ")[1].strip())
                     except:
+                        print("\033[31m" + "Invalid number. Run the command: `remove {rule number}`" + "\033[0m")
+                        continue
+                    if number > len(self.proxy.options):
                         print("\033[31m" + "Invalid number." + "\033[0m")
                         continue
-                    if number > len(self.Server.proxy.options):
-                        print("\033[31m" + "Invalid number." + "\033[0m")
-                        continue
-                    self.Server.proxy.options.pop(number-1)
-                    await self.Server.proxy.UpdateFile()
+                    self.proxy.options.pop(number-1)
+                    await self.proxy.UpdateFile()
                     print("Rule/Filter removed.")
                     print("Rules/Filters:")
                     X = 1
-                    for proxy in self.Server.proxy.options:
+                    for proxy in self.proxy.options:
                         option = ""
                         for o in proxy[0]:
                             option += o + " & "
@@ -137,7 +149,7 @@ class Inputes():
                 elif command == "list":
                     print("Proxies:")
                     X = 1
-                    for proxy in self.Server.proxy.options:
+                    for proxy in self.proxy.options:
                         option = ""
                         for o in proxy[0]:
                             option += o + " & "
@@ -147,12 +159,14 @@ class Inputes():
                 else:
                     print("\033[31m" + "Command not found." + "\033[0m")
         elif args == "on":
-            self.Server.proxy = Proxy()
+            for server in self.DNSServers:
+                server.proxy = self.proxy
             self.UpdateSettings("Proxy", 1)
             print("Proxy is enabled.")
         elif args == "off":
+            for server in self.DNSServers:
+                server.proxy = None
             self.UpdateSettings("Proxy", 0)
-            self.Server.proxy = None
             print("Proxy is disabled.")
         else:
             print("\033[31m" + "Invalid argument. on/off" + "\033[0m")
@@ -238,7 +252,8 @@ class Inputes():
             if command == "exit":
                 #Exit the app.
                 await self.Client.Close()
-                await self.Server.Close()
+                for server in self.DNSServers:
+                    await server.Close()
                 os._exit(1)
             if command in self._Shorts.keys():
                 command = self._Shorts[command]
@@ -254,17 +269,22 @@ class Inputes():
                         port = int(port)
                     else:
                         ip = args
+                    print(f"Starting Speed Test. On: {ip}:{port}")
+                    cached_time, dotcom_time, uncached_time = await SpeedTest(ip, port)
+                    print("Speed Test Results:")
+                    print("\033[31m" + f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
+                    print("\033[32m" + f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
+                    print("\033[33m" + f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question." + "\033[0m")
                 else:
                     if not self.Server:
                         if (await self.ServerComm()) == False:
                             continue
-                    ip = My_IP
-                print(f"Starting Speed Test. On: {ip}:{port}")
-                cached_time, dotcom_time, uncached_time = await SpeedTest(ip, port)
-                print("Speed Test Results:")
-                print("\033[31m" + f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
-                print("\033[32m" + f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
-                print("\033[33m" + f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question." + "\033[0m")
+                    print(f"Starting Speed Test. On: Self Server.")
+                    cached_time, dotcom_time, uncached_time = await SpeedTest(MyIps[0], port)
+                    print("Speed Test Results:")
+                    print("\033[31m" + f"Cached Time: {SetToString(cached_time)} - Same question in short time.")
+                    print("\033[32m" + f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
+                    print("\033[33m" + f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question." + "\033[0m")
             elif Domain(command):
                 if not self.Client:
                     if (await self.ClientComm()) == False:
@@ -291,7 +311,7 @@ class Inputes():
                     Args = ", ".join(self.ARGS[command])
                     print("Args:", Args)
                     continue
-                if not self.Server:
+                if self.DNSServers == []:
                     if (await self.ServerComm()) == False:
                         continue
                 await self.SubCommandsS[command](args)

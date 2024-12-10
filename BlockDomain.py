@@ -123,7 +123,6 @@ class BlockDomain():
         Chunk = ""
         LinkNumber = 0
         MAX = len(Types_TO_block[type])
-        Resolver = resolver(self.client)
         Httpclient = socket_farm(self.client)
         for link in Types_TO_block[type]:
             LinkNumber += 1
@@ -150,4 +149,5 @@ class BlockDomain():
         print("Start Encoding.")
         open(f"BlockList/{type}.txt", "wb").write(domains.encode("utf-8"))
         self.Lists.append(f"BlockList/{type}.txt")
+        del Httpclient
         return

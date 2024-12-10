@@ -12,12 +12,14 @@ class DNSClient():
         self.Wait_list = {}
         self.Kill = True
         self.reader = None
-        self.AllClients = []
+        self.AllClients = [] 
         self.Key = 1
-
+    async def Initialize(self):
+        await self.Socket.Connect((self.ip, self.port))
+        asyncio.create_task(self.Reader())
+        return
     async def Reader(self):
         #start event with flag so you can end when you want. "Remember When you set flag to False. it will stop read until next Message."
-        await self.Socket.Connect((self.ip, self.port))
         while self.Kill:
             try:
                 data = await self.Socket.Recv()#read each data from the server. and put in the msg list.

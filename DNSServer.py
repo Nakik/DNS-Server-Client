@@ -102,15 +102,15 @@ class  DNSServer():
                 addr[0]
             except:
                 continue
-            if self.DDOS and addr[0] != My_IP: #I will not ddos myself? lol.
-                if addr[0] in self.DDOSlist:
-                    if self.DDOSlist[addr[0]][0] > 100 and self.DDOSlist[addr[0]][1] - time.time() < 3:
-                        continue
-                    if self.DDOSlist[addr[0]][0] > 100:
-                        self.DDOSlist[addr[0]] = [0, time.time()]
-                    self.DDOSlist[addr[0]][0] += 1
-                else:
-                    self.DDOSlist[addr[0]] = [1, time.time()]
+            #if self.DDOS and addr[0] != "127.0.0.1": #I will not ddos myself? lol.
+            #    if addr[0] in self.DDOSlist:
+            #        if self.DDOSlist[addr[0]][0] > 100 and self.DDOSlist[addr[0]][1] - time.time() < 3:
+            #            continue
+            #        if self.DDOSlist[addr[0]][0] > 100:
+            #            self.DDOSlist[addr[0]] = [0, time.time()]
+            #        self.DDOSlist[addr[0]][0] += 1
+            #    else:
+            #        self.DDOSlist[addr[0]] = [1, time.time()]
             try:
                 asyncio.create_task(asyncio.wait_for(self.HandleQuery(data, addr), 3))#3 seconds its more than enough for DNS.
                 #Creating task for each new query is better. it just for the Send and Wait for response part. But it can be really effective.
@@ -167,16 +167,17 @@ class  DNSServer():
                 if self.BlockDomain.CheckDomain(domain):
                     #This part you can ignore and delete. its just for the block domain.
                     #If the domain is in the block list. it will return the data from the ExampleResponses.
-                    #But not always you need to return the same data. you can return random data. or just return the same data.
+                    #But not always you need to return the same data. you can return random data, or ignore the request(query).
+                    print(f"Blocked Domain: {domain}")
                     question = requests.GetQuestions()[0]
                     data = ExampleResponses[question.type] #Get not working data.
                     r = [(question.domain, question.type, question.Class, 120, data)] #Build anser
+                    ADDRString += f" - Auto Block {self.logger.MsgToString(requests)} TTA: {time.time()-Time}"
+                    await self.logger.Print(ADDRString)
                     try:
                         await self.server_socket.Send(BuildAnser(requests, r, 1).ToBytes(), addr) #Build anser and return it.
                     except KeyError:
                         return #not return anything.
-                    except:
-                        print(traceback.format_exc())
                     return
             if self.DBipLocation:
                 if addr[0] in self.IpsMemory:
@@ -187,7 +188,7 @@ class  DNSServer():
                             country = self.MyLocation
                         else:
                             country = self.DBipLocation.get_all(addr[0]).country_short
-                        if country is None:
+                        if country is None or country == "-":
                             socket = self.Socket.Get()
                         else:
                             BestDNScountry = find_nearest_country(country, DNSlocations.keys())
@@ -213,7 +214,7 @@ class  DNSServer():
             except:
                 pass
             if self.logger:
-                await self.logger.Log(Anser_, ADDRString, Time=time.time()-Time, Server=socket.Socket.s.getpeername()[0])
+                await self.logger.Log(Anser_, ADDRString, Time=time.time()-Time, Server="1")
             return
         except GeneratorExit:
             return #Cant do anything. its sucks.

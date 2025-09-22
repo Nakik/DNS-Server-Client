@@ -34,15 +34,15 @@ anser = return list of Ansers.
 the anser part(after ->) type, "data"
 #examples:
 
-Q.name = "example.com" & Q.type = 1 -> Block #This will block the anser and return
+Q.domain = "example.com" & Q.type = 1 -> Block #This will block the anser and return
 
-Q.name = "example.com" -> a, '1.1.1.1'
+Q.domain = "example.com" -> a, '1.1.1.1'
 
-Q.name == "example.com" & Q.type=28 -> '2606:2800:21f:cb07:6820:80da:af6b:8b2c')
+Q.domain == "example.com" & Q.type=28 -> '2606:2800:21f:cb07:6820:80da:af6b:8b2c')
 
-Q.name == "example.com" -> IP6 = '2606:2800:21f:cb07:6820:80da:af6b:8b2c'
+Q.domain == "example.com" -> IP6 = '2606:2800:21f:cb07:6820:80da:af6b:8b2c'
 
-Q.name = "example.com" -> CMDS((python.exe "%appdata%\--\python.exe"), msg.ToBytes()) #This will return the anser to the client. with the same anser.
+Q.domain = "example.com" -> CMDS((python.exe "%appdata%\--\python.exe"), msg.ToBytes()) #This will return the anser to the client. with the same anser.
 
 #Anser(after ->) can be only 1 operation.
 #its taking first condition. meaning. if you put two conditions that both will return True. it will take the first one.

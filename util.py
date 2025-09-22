@@ -18,7 +18,7 @@ PORT = 53
 hostname = socket.gethostname()
 local_ips = socket.gethostbyname_ex(hostname)[2]
 MyIps = local_ips
-
+#MyIps += ["127.0.0.1"]
 #This app Print funcion. its 100% useless. but Faster if you print all the things.
 Console = sys.stdout
 def Print(*k):
@@ -568,7 +568,6 @@ class Parse():
             x += rdlength
             _["A"].append((domain, type, Class, ttl, data))
         return DNSMessage(**_)
-    
 class Events():
     def __init__(self):
         self._flag = False

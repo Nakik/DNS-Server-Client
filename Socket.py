@@ -2,6 +2,7 @@ import asyncio, socket
 from ssl import SSLSocket
 from typing import Union, Optional
 import contextvars, functools #To run the socket funcion in Asyncio.
+import traceback
 #Create Socket object.
 #its like(exactly) the normal socket just Asyncio.
 #Normal asyncio socket funcions to slow.

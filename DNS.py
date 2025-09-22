@@ -12,10 +12,12 @@ except:
 import os
 os.system(f"title {Window_Title}") #Set title Why not?
 
+import time
+time.sleep(2)#Sleep 2 seconds to make sure system Network Manager is on.
+#Can cause 
 #This libraries are default in python. so you dont need to install them.
 import asyncio
 import traceback
-import sys
 import json
 try:
     import psutil
@@ -50,11 +52,11 @@ from DNSMemoryManager import DNSMemoryManager
 #except:
 #    print("Cant set DNS proxy.")
 
-try:
-    import colorama
-    colorama.init()
-except:
-    pass #If you dont have colorama. its fine. its just for colors.
+#try:
+#    import colorama
+#    colorama.init()
+#except:
+#    pass #If you dont have colorama. its fine. its just for colors.
 
 #"domains to skip. its mean it will send New DNS request to the server if it not in the memory dict"
 #for endpoint that you dont care about speed and more about the data.
@@ -104,6 +106,8 @@ async def PrintInfo(Time:int=3, logger: Logger=None):
             #This CPU is not working so Skill issue. print just memory.
             msg = f"Memory: {Memory}"# - CPU: {single_cpu_percent:.2f}%"
             await logger.Print(msg)
+        except asyncio.CancelledError:
+            pass
         except:
             print(traceback.format_exc())
 
@@ -137,7 +141,7 @@ async def main():
         open(Settingfile, "w").write(json.dumps(Settings, indent=4))
     DNSServers: list[DNSServer] = []
     for ip in MyIps:
-        print("\033[93m" + "Starting Server on: ", f"0.0.0.0/{ip}" + "\033[0m")
+        print("\033[93m" + "Starting Server on: ", ip + "\033[0m")
         port = Settings["Port"]
         DNSserver = DNSServer(ip=ip, port=port)
         asyncio.create_task(DNSserver.Main())

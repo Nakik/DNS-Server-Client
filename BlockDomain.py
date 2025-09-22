@@ -84,6 +84,7 @@ def openfile(file):
         data = mmapped_file.read()
         mmapped_file.close()
     return data
+
 class BlockDomain():
     def __init__(self, types: list, client: DNSClient):
         self.client = client
@@ -96,7 +97,7 @@ class BlockDomain():
             if type in Types_TO_block.keys():
                 try:
                     open(f"BlockList/{type}.txt", "r").close()
-                    self.Lists.append(f"BlockList/{type}.txt")
+                    self.Lists.append(openfile(f"BlockList/{type}.txt"))
                 except:
                     Types_TO_download.append(type)
         asyncio.create_task(self.DownloadLists(Types_TO_download))
@@ -104,13 +105,8 @@ class BlockDomain():
     def CheckDomain(self, domain: str):
         #Binary_Domain = ''.join(format(ord(char), '08b') for char in domain)
         Binary_Domain = domain.encode("utf-8")
-        for list in self.Lists:
-            try:
-                Z = openfile(list).split(b"\n")
-            except FileNotFoundError:
-                print("Please Restart Up to Re-download the files.")
-                pass #You deleted the file. restart app to fix.
-            if Binary_Domain in Z:
+        for domain_list in self.Lists:
+            if Binary_Domain in domain_list:
                 return True
         return False
     async def DownloadLists(self, list: list):
@@ -148,6 +144,6 @@ class BlockDomain():
             domains += Chunk
         print("Start Encoding.")
         open(f"BlockList/{type}.txt", "wb").write(domains.encode("utf-8"))
-        self.Lists.append(f"BlockList/{type}.txt")
+        self.Lists.append(openfile(f"BlockList/{type}.txt"))
         del Httpclient
         return

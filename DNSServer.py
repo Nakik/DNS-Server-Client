@@ -1,5 +1,6 @@
 import asyncio
 import socket
+import socket as socketModule
 import time
 from util import *
 from util import memory
@@ -38,7 +39,7 @@ class DNSServers():
         self.XS += 1 #Add 1 to counter.
         return self.Sockets[0]
     def GetIP(self, IP: str) -> DNSClient:
-        for S in self.Sockets:
+        for S in list(self.Sockets):
             if S.ip == IP:
                 return S
         client = DNSClient(IP, 53)
@@ -79,6 +80,7 @@ class  DNSServer():
             self.DDOSlist = {}
 
     async def Main(self):
+        print(self.ip, self.port)
         try:
             await self.server_socket.Bind((self.ip, self.port))
         except socket.error as e:
@@ -92,6 +94,7 @@ class  DNSServer():
                 data, addr = await self.server_socket.RecvFrom()
             except:
                 continue
+            #print(data, addr)
             """
             Ok so ddos:
             there is a list of ips. and if you in the list. you will be blocked.
@@ -146,6 +149,33 @@ class  DNSServer():
                     if self.logger:
                                 ADDRString += " - Auto Proxy Anser"
                                 await self.logger.Log(r, ADDRString, Time=time.time()-Time)
+                    for ans in list(r._ansers):
+                        if ans[1] == 1:
+                            try:
+                                socketModule.inet_aton(ans[4])
+                            except:
+                                DNSclient = self.Socket.Get()
+                                query = await DNSclient.BuildQuery(domain=ans[4], type=1)
+                                ansers = await DNSclient.Send(query.ToBytes())
+                                an = Parse.DNSMessageToJSON(ansers)
+                                r._ansers = []
+                                for anser in an._ansers:
+                                    Answer = list(anser)
+                                    Answer[0]=ans[0]
+                                    r._ansers.append(tuple(Answer))
+                        elif ans[1] == 28:
+                            try:
+                                socketModule.inet_pton(socketModule.AF_INET6, ans[4])
+                            except:
+                                DNSclient = self.Socket.Get()
+                                query = await DNSclient.BuildQuery(domain=ans[4], type=28)
+                                ansers = await DNSclient.Send(query.ToBytes())
+                                an = Parse.DNSMessageToJSON(ansers)
+                                r._ansers = []
+                                for anser in an._ansers:
+                                    Answer = list(anser)
+                                    Answer[0]=ans[0]
+                                    r._ansers.append(tuple(Answer))
                     await self.server_socket.Send(r.ToBytes(), addr)#send the response to the client.
                     return
             anser = None

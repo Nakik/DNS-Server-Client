@@ -30,13 +30,21 @@ def RandomDomain():
 # Measure uncached response time
 async def uncached_Time(DNS: DNSClient, Count: int = 100):
     uncached_time = 0
+    SleepCounter = 0
     for _ in range(Count):
         domain = RandomDomain()
         Query = await DNS.BuildQuery(domain=domain)
         start = time.time()
-        await DNS.Send(Query.ToBytes())
+        try:
+            await asyncio.wait_for(DNS.Send(Query.ToBytes()), 1)
+        except:
+            continue
         end = time.time()
         uncached_time += end - start
+        if SleepCounter == 5:
+            await asyncio.sleep(0.1)
+            SleepCounter = 0
+        SleepCounter += 1
     return uncached_time / Count
 
 # Check response times for cached, dotcom, and uncached domains
@@ -46,34 +54,51 @@ async def CheckResponseTime(DNS: DNSClient, Count: int = 100):
     cached_domains = []
 
     # Measure uncached time asynchronously
-    uncached_task = asyncio.create_task(uncached_Time(DNS, Count=Count))
 
     # Measure dotcom response times
+    SleepCounter = 0
     for _ in range(Count):
         domain = Dotcom()
         Query = await DNS.BuildQuery(domain=domain)
         start = time.time()
-        await DNS.Send(Query.ToBytes())
+        #try:
+        #    await asyncio.wait_for(DNS.Send(Query.ToBytes()), 1)
+        #except:
+        #    continue
+        try:
+            await asyncio.wait_for(DNS.Send(Query.ToBytes()), 0.5)
+        except:
+            continue
         end = time.time()
         dotcom_time += end - start
         cached_domains.append(domain)
-
+        if SleepCounter == 5:
+            await asyncio.sleep(0.1)
+            SleepCounter = 0
+        SleepCounter += 1
+    print("Finished Dotcom")
     # Measure cached response times using previously resolved domains
     for _ in range(Count):
         domain = random.choice(cached_domains)
         Query = await DNS.BuildQuery(domain=domain)
         start = time.time()
-        await DNS.Send(Query.ToBytes())
+        try:
+            await asyncio.wait_for(DNS.Send(Query.ToBytes()), 1)
+        except:
+            continue
         end = time.time()
         cached_time += end - start
-
+        if SleepCounter == 5:
+            await asyncio.sleep(0.1)
+            SleepCounter = 0
+        SleepCounter += 1
+    print("Finished Cached")
     # Wait for the uncached task to complete
-    uncached_time = await uncached_task
-
+    uncached_time = await uncached_Time(DNS, Count=Count)
+    print("Finished Uncached")
     # Calculate average times
     cached_time /= Count
     dotcom_time /= Count
-
     return cached_time, dotcom_time, uncached_time
 
 # Main function to initialize the DNS client and check response times

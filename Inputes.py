@@ -104,13 +104,21 @@ class Inputes():
                 if command == "add":
                     print("Enter the domain/value: (Type stop to stop)")
                     domain = await ainput()
-                    if value == "stop":
+                    if domain == "stop":
                         continue
                     print("Enter the type(IP->1/A): (Type stop to stop)")
                     type = await ainput()
-                    if value == "stop":
+                    if type.upper() in dns_record_types.keys():
+                        type = dns_record_types[type.upper()].__str__()
+                    try:
+                        int(type)
+                    except:
+                        print("\033[31m" + "Invalid type." + "\033[0m")
+                        continue
+                    if type == "stop":
                         continue
                     print("Enter the Target(Ip/Domain depend on value.): (Type stop to stop)")
+                    print("You can input domain for IP value. and the sver will resolve it.")
                     value = await ainput()
                     if value == "stop":
                         continue
@@ -276,7 +284,7 @@ class Inputes():
                     print("\033[32m" + f"Dotcom Time: {SetToString(dotcom_time)} - Dotcom domain Faster than random domain.")
                     print("\033[33m" + f"Uncached Time: {SetToString(uncached_time)} - First time to ask the question." + "\033[0m")
                 else:
-                    if not self.Server:
+                    if not self.DNSServers:
                         if (await self.ServerComm()) == False:
                             continue
                     print(f"Starting Speed Test. On: Self Server.")
